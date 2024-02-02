@@ -133,7 +133,6 @@ class StunSocks:
                     # send data through the TURN server
                     if conn_status == 0:
                         response = self.socks_init(addr, port)
-                    print(response)
 
                     response = self.socks_send(data)
                     conn_status = 1
