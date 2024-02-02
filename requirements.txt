@@ -1,0 +1,6 @@
+bitstring
+PySocks
+IPy
+socks5server
+pyshark
+python-whois
