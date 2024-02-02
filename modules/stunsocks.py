@@ -113,6 +113,13 @@ class StunSocks:
 
             port = struct.unpack('!H', client_socket.recv(2))[0]
 
+            try:
+                print(self.c.BWHITE +
+                    "\n[✓] Destination: " + self.c.GREEN + addr + ":" + str(port) + self.c.WHITE)
+            except:
+                print(self.c.BWHITE +
+                    "\n[✓] Destination: " + self.c.GREEN + str(addr.decode()) + ":" + str(port) + self.c.WHITE)
+
             if cmd == 1:  # CONNECT
                 remote_socket = socket.socket(
                     socket.AF_INET, socket.SOCK_STREAM)
@@ -127,7 +134,11 @@ class StunSocks:
 
                 while True:
                     data = client_socket.recv(4096)
-                    print(data)
+
+                    if self.verbose > 0:
+                        print("Request by client:")
+                        print(data)
+
                     if not data:
                         break
                     # send data through the TURN server
