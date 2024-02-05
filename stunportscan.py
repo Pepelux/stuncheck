@@ -6,7 +6,7 @@ from lib.params import get_stunportscan_args
 
 
 def main():
-    ip, host, rport, proto, verbose, user, pwd, ports = get_stunportscan_args()
+    ip, host, rport, proto, verbose, user, pwd, ipdst, ports = get_stunportscan_args()
 
     s = StunPortscan()
     s.ip = ip
@@ -16,6 +16,7 @@ def main():
     s.verbose = verbose
     s.user = user
     s.pwd = pwd
+    s.ipdst = ipdst
     s.ports = ports
 
     s.start()

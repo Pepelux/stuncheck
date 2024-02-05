@@ -20,6 +20,7 @@ class StunPortscan:
         self.rport = '3478'
         self.proto = 'UDP'
         self.verbose = '0'
+        self.ipdst = ''
         self.ports = 'ALL'
 
         self.quit = False
@@ -99,10 +100,11 @@ class StunPortscan:
 
             message = build_request(3, transaction_id, '06', True, '')
 
-            if self.verbose == 2:
+            if self.verbose > 1:
                 print(self.c.BWHITE + "[+] Request")
-                print(self.c.GREEN + message.hex())
-                print(self.c.WHITE)
+                if self.verbose == 3:
+                    print(self.c.GREEN + message.hex())
+                    print(self.c.WHITE)
 
                 headers = header_parse(message.hex()[0:40])
                 attributes = attributes_parse(message.hex()[40:])
@@ -120,10 +122,11 @@ class StunPortscan:
                 sock.sendto(message, addr)
                 response = sock.recv(1024)
 
-            if self.verbose == 2:
+            if self.verbose > 1:
                 print(self.c.BWHITE + "[+] Response")
-                print(self.c.YELLOW + str(response.hex()))
-                print(self.c.WHITE)
+                if self.verbose == 3:
+                    print(self.c.YELLOW + str(response.hex()))
+                    print(self.c.WHITE)
 
             headers = header_parse(response.hex()[0:40])
             attributes = attributes_parse(response.hex()[40:])
@@ -142,10 +145,11 @@ class StunPortscan:
             message = build_request(
                 3, transaction_id, '06', False, '', self.user, realm, nonce, self.pwd)
 
-            if self.verbose == 2:
+            if self.verbose > 1:
                 print(self.c.BWHITE + "[+] Request")
-                print(self.c.GREEN + message.hex())
-                print(self.c.WHITE)
+                if self.verbose == 3:
+                    print(self.c.GREEN + message.hex())
+                    print(self.c.WHITE)
 
                 headers = header_parse(message.hex()[0:40])
                 attributes = attributes_parse(message.hex()[40:])
@@ -163,10 +167,11 @@ class StunPortscan:
                 sock.sendto(message, addr)
                 response = sock.recv(1024)
 
-            if self.verbose == 2:
+            if self.verbose > 1:
                 print(self.c.BWHITE + "[+] Response")
-                print(self.c.YELLOW + response.hex())
-                print(self.c.WHITE)
+                if self.verbose == 3:
+                    print(self.c.YELLOW + response.hex())
+                    print(self.c.WHITE)
 
             headers = header_parse(response.hex()[0:40])
             attributes = attributes_parse(response.hex()[40:])
@@ -183,17 +188,21 @@ class StunPortscan:
                 ports.sort()
 
             for p in ports:
-                ipaddr = '127.0.0.1'
+                if self.ipdst != '':
+                    ipaddr = self.ipdst
+                else:
+                    ipaddr = '127.0.0.1'
                 port = p
                 ipport = ipaddr + ':' + str(port)
 
                 message = build_request(
                     10, transaction_id, '06', False, ipport, self.user, realm, nonce, self.pwd)
 
-                if self.verbose == 2:
+                if self.verbose > 1:
                     print(self.c.BWHITE + "[+] Request")
-                    print(self.c.GREEN + message.hex())
-                    print(self.c.WHITE)
+                    if self.verbose == 3:
+                        print(self.c.GREEN + message.hex())
+                        print(self.c.WHITE)
 
                     headers = header_parse(message.hex()[0:40])
                     attributes = attributes_parse(message.hex()[40:])
@@ -211,10 +220,11 @@ class StunPortscan:
                     sock.sendto(message, addr)
                     response = sock.recv(1024)
 
-                if self.verbose == 2:
-                    print(self.c.BWHITE + "[+] Response")
-                    print(self.c.YELLOW + response.hex())
-                    print(self.c.WHITE)
+                if self.verbose > 1:
+                    if self.verbose == 3:
+                        print(self.c.BWHITE + "[+] Response")
+                        print(self.c.YELLOW + response.hex())
+                        print(self.c.WHITE)
 
                 headers = header_parse(response.hex()[0:40])
                 attributes = attributes_parse(response.hex()[40:])

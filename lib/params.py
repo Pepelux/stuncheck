@@ -106,6 +106,7 @@ Get info about a STUN/TURN server.
     parser.add_argument('-r', '--remote_port', type=int, help='Remote port (default: 3478)', dest='remote_port', default=3478)
     parser.add_argument('-p', '--proto', type=str, help='Protocol: udp|tcp|tls (default: udp)', dest='proto', default='udp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
+    parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
 
     # Array for all arguments passed to script
     args = parser.parse_args()
@@ -116,6 +117,9 @@ Get info about a STUN/TURN server.
         PORT = args.remote_port
         PROTO = args.proto
         VERBOSE = args.verbose
+        MORE_VERBOSE = args.more_verbose
+        if MORE_VERBOSE == 1:
+            VERBOSE = 2
 
         return IPADDR, HOST, PORT, PROTO, VERBOSE
     except ValueError:
@@ -246,6 +250,7 @@ Internal port scanner over STUN connection.
     parser.add_argument('-p', '--proto', type=str, help='Protocol: tcp|tls (default: tcp)', dest='proto', default='tcp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
+    parser.add_argument('-vvv', '--much_more_verbose', help='Increase more verbosity', dest='much_more_verbose', action="count")
     parser.add_argument('-user', type=str, help='Username', dest="user", required=True)
     parser.add_argument('-pass', type=str, help='Password', dest="pwd", required=True)
     parser.add_argument('-ipdst', type=str, help='IP to scan (default: 127.0.0.1)', dest='ipdst', default='127.0.0.1')
@@ -261,13 +266,17 @@ Internal port scanner over STUN connection.
         PROTO = args.proto
         VERBOSE = args.verbose
         MORE_VERBOSE = args.more_verbose
+        MUCH_MORE_VERBOSE = args.much_more_verbose
         if MORE_VERBOSE == 1:
             VERBOSE = 2
+        if MUCH_MORE_VERBOSE == 1:
+            VERBOSE = 3
         USER = args.user
         PWD = args.pwd
+        IPDST = args.ipdst
         PORTS = args.ports
 
-        return IPADDR, HOST, PORT, PROTO, VERBOSE, USER, PWD, PORTS
+        return IPADDR, HOST, PORT, PROTO, VERBOSE, USER, PWD, IPDST, PORTS
     except ValueError:
         sys.exit(1)
 

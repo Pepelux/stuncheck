@@ -357,8 +357,11 @@ def attributes_parse(buf):
                 if attribute_type == 'CONNECTION-ID':
                     attribute[attribute_type] = bytes.fromhex(attribute_value)
                 else:
-                    attribute[attribute_type] = bytes.fromhex(
-                        attribute_value).decode("ascii")
+                    if attribute_value == '00000401556e617574686f72697a6564':
+                        attribute[attribute_type] = '401 Unauthorized'
+                    else:    
+                        attribute[attribute_type] = bytes.fromhex(
+                            attribute_value).decode("ascii")
             except:
                 # if attribute_type == 'XOR-MAPPED-ADDRESS' or attribute_type == 'MAPPED-ADDRESS' or attribute_type == 'RESPONSE-ORIGIN':
                 if attribute_type[0:3] == 'XOR':

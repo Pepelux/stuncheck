@@ -99,12 +99,12 @@ class StunLogin:
             headers = header_parse(message.hex()[0:40])
             attributes = attributes_parse(message.hex()[40:])
 
-            if self.verbose == 1:
-                print(self.c.BWHITE + "[+] " + self.c.GREEN + headers['MESSAGE_TYPE'] + self.c.WHITE)
-            elif self.verbose == 2:
-                print(self.c.BWHITE + "[+] Request")
-                print(self.c.GREEN + message.hex())
-                print(self.c.WHITE)
+            print(self.c.BWHITE + "[+] " + self.c.GREEN + headers['MESSAGE_TYPE'] + self.c.WHITE)
+
+            if self.verbose > 0:
+                if self.verbose == 2:
+                    print(self.c.BWHITE + "[+] Request")
+                    print(self.c.GREEN + message.hex())
 
                 print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
                 print(headers)
@@ -122,16 +122,16 @@ class StunLogin:
             headers = header_parse(response.hex()[0:40])
             attributes = attributes_parse(response.hex()[40:])
 
-            if self.verbose == 1:
-                print(self.c.BWHITE + "[-] " + self.c.YELLOW + headers['MESSAGE_TYPE'] + self.c.WHITE)
-                try:
-                    print(self.c.BWHITE + "[-] " + self.c.RED + attributes['ERROR-CODE'] + self.c.WHITE)
-                except:
-                    pass
-            elif self.verbose == 2:
-                print(self.c.BWHITE + "[+] Response")
-                print(self.c.YELLOW + str(response.hex()))
-                print(self.c.WHITE)
+            print(self.c.BWHITE + "[-] " + self.c.YELLOW + headers['MESSAGE_TYPE'] + self.c.WHITE)
+            try:
+                print(self.c.BWHITE + "[-] " + self.c.RED + attributes['ERROR-CODE'] + self.c.WHITE)
+            except:
+                pass
+
+            if self.verbose > 0:
+                if self.verbose == 2:
+                    print(self.c.BWHITE + "[+] Response")
+                    print(self.c.YELLOW + str(response.hex()))
 
                 print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
                 print(headers)
@@ -149,12 +149,12 @@ class StunLogin:
             headers = header_parse(message.hex()[0:40])
             attributes = attributes_parse(message.hex()[40:])
 
-            if self.verbose == 1:
-                print(self.c.BWHITE + "[+] " + self.c.GREEN + headers['MESSAGE_TYPE'] + self.c.WHITE)
-            elif self.verbose == 2:
-                print(self.c.BWHITE + "[+] Request")
-                print(self.c.GREEN + message.hex())
-                print(self.c.WHITE)
+            print(self.c.BWHITE + "[+] " + self.c.GREEN + headers['MESSAGE_TYPE'] + self.c.WHITE)
+
+            if self.verbose > 0:
+                if self.verbose == 2:
+                    print(self.c.BWHITE + "[+] Request")
+                    print(self.c.GREEN + message.hex())
 
                 print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
                 print(headers)
@@ -172,16 +172,16 @@ class StunLogin:
             headers = header_parse(response.hex()[0:40])
             attributes = attributes_parse(response.hex()[40:])
 
-            if self.verbose == 1:
-                print(self.c.BWHITE + "[-] " + self.c.YELLOW + headers['MESSAGE_TYPE'] + self.c.WHITE)
-                try:
-                    print(self.c.BWHITE + "[-] " + self.c.RED + attributes['ERROR-CODE'] + self.c.WHITE)
-                except:
-                    pass
-            elif self.verbose == 2:
-                print(self.c.BWHITE + "[+] Response")
-                print(self.c.YELLOW + response.hex())
-                print(self.c.WHITE)
+            print(self.c.BWHITE + "[-] " + self.c.YELLOW + headers['MESSAGE_TYPE'] + self.c.WHITE)
+            try:
+                print(self.c.BWHITE + "[-] " + self.c.RED + attributes['ERROR-CODE'] + self.c.WHITE)
+            except:
+                pass
+
+            if self.verbose > 0:
+                if self.verbose == 2:
+                    print(self.c.BWHITE + "[+] Response")
+                    print(self.c.YELLOW + response.hex())
 
                 print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
                 print(headers)

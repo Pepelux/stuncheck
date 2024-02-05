@@ -106,14 +106,14 @@ class StunInfo:
         message += b"\x21\x12\xa4\x42"      # Magic Cookie
         message += transactionID.tobytes()  # Transaction ID
 
-        if self.verbose == 1:
+        if self.verbose > 0:
             try:
                 headers = header_parse(message.hex()[0:40])
                 attributes = attributes_parse(message.hex()[40:])
-                print(self.c.BWHITE)
-                print('Request:')
-                print(message.hex())
-                print(self.c.WHITE)
+                if self.verbose == 2:
+                    print(self.c.BWHITE)
+                    print('Request:')
+                    print(message.hex())
                 print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
                 # print(message.hex()[0:40])
                 print(headers)
@@ -134,11 +134,11 @@ class StunInfo:
             except:
                 attributes = {}
 
-            if self.verbose == 1:
-                print(self.c.BWHITE)
-                print('Response:')
-                print(response.hex())
-                print(self.c.WHITE)
+            if self.verbose > 0:
+                if self.verbose == 2:
+                    print(self.c.BWHITE)
+                    print('Response:')
+                    print(response.hex())
                 print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
                 # print(response.hex()[0:40])
                 print(headers)
@@ -202,14 +202,14 @@ class StunInfo:
 
         message += attributes
 
-        if self.verbose == 1:
+        if self.verbose > 0:
             try:
                 headers = header_parse(message.hex()[0:40])
                 attributes = attributes_parse(message.hex()[40:])
-                print(self.c.BWHITE)
-                print('Request:')
-                print(message.hex())
-                print(self.c.WHITE)
+                if self.verbose == 2:
+                        print(self.c.BWHITE)
+                        print('Request:')
+                        print(message.hex())
                 print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
                 # print(message.hex()[0:40])
                 print(headers)
@@ -236,11 +236,11 @@ class StunInfo:
             headers = header_parse(response.hex()[0:40])
             attributes = attributes_parse(response.hex()[40:])
 
-            if self.verbose == 1:
-                print(self.c.BWHITE)
-                print("Response:")
-                print(response.hex())
-                print(self.c.WHITE)
+            if self.verbose > 0:
+                if self.verbose == 2:
+                    print(self.c.BWHITE)
+                    print("Response:")
+                    print(response.hex())
                 print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
                 print(headers)
                 print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
