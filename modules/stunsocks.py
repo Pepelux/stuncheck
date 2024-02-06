@@ -67,7 +67,7 @@ class StunSocks:
         server.listen(5)
 
         print(self.c.BYELLOW +
-              f"Server started on {self.socks_host}:{self.socks_port}")
+              f"Sock5 server started on {self.socks_host}:{self.socks_port}")
 
         try:
             while True:
@@ -110,7 +110,7 @@ class StunSocks:
             else:
                 client_socket.close()
                 return
-
+            
             port = struct.unpack('!H', client_socket.recv(2))[0]
 
             try:
@@ -121,23 +121,12 @@ class StunSocks:
                     "\n[✓] Destination: " + self.c.GREEN + str(addr.decode()) + ":" + str(port) + self.c.WHITE)
 
             if cmd == 1:  # CONNECT
-                remote_socket = socket.socket(
-                    socket.AF_INET, socket.SOCK_STREAM)
-                try:
-                    remote_socket.connect((addr, port))
-                except:
-                    print("Error de conexión")
-
                 # no authentication required
                 client_socket.sendall(
                     b'\x05\x00\x00\x01\x00\x00\x00\x00\x00\x00')
 
                 while True:
                     data = client_socket.recv(4096)
-
-                    if self.verbose > 0:
-                        print("Request by client:")
-                        print(data)
 
                     if not data:
                         break
