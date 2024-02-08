@@ -240,7 +240,7 @@ def get_stunportscan_args():
 
 ''' + BBLUE + ''' -= STUN portscan =-''' + WHITE,
         epilog=BWHITE + '''
-Internal port scanner over STUN connection.
+Port scanner via TURN connection. It is possible to scan remote computers, from the internal network or the machine itself if it allows localhost connections.
  
 ''')
 
@@ -297,7 +297,7 @@ def get_stunipscan_args():
 
 ''' + BBLUE + ''' -= STUN IP scan =-''' + WHITE,
         epilog=BWHITE + '''
-Try to access to several IP addresses over STUN connection.
+Tries to access to several pre-established IP addresses (or a specific IP address) over TURN connection.
  
 ''')
 
@@ -396,7 +396,7 @@ def get_sniff_args():
 
 ''' + BLUE + ''' -= STUN Network sniffing =-''' + WHITE,
         epilog=BWHITE + '''
-Network sniffer for STUN protocol.
+Sniffer for the STUN protocol. When starting a conference it will show all IP addresses involved in the conversation. It verifies the attributes of the messages received from the STUN/TURN server and also the communication using the RTP protocol.
  
 ''')
 
