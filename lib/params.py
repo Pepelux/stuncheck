@@ -250,7 +250,7 @@ Port scanner via TURN connection. It is possible to scan remote computers, from 
     parser.add_argument('-p', '--proto', type=str, help='Protocol: tcp|tls (default: tcp)', dest='proto', default='tcp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
-    parser.add_argument('-vvv', '--much_more_verbose', help='Increase more verbosity', dest='much_more_verbose', action="count")
+    parser.add_argument('-vvv', '--much_more_verbose', help='Increase much more verbosity', dest='much_more_verbose', action="count")
     parser.add_argument('-user', type=str, help='Username', dest="user", required=True)
     parser.add_argument('-pass', type=str, help='Password', dest="pwd", required=True)
     parser.add_argument('-ipdst', type=str, help='IP to scan (default: 127.0.0.1)', dest='ipdst', default='127.0.0.1')
