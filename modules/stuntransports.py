@@ -41,7 +41,7 @@ class StunTransports:
             print(self.c.BRED + 'Protocol %s is not supported' % self.proto)
             sys.exit()
 
-        logo = Logo('stunlogin')
+        logo = Logo('stuntransports')
         logo.print()
 
         if self.proto == 'UDP':
