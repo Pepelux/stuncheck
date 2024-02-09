@@ -320,7 +320,7 @@ options:
   -p PROTO, --proto PROTO                    Protocol: tcp|tls (default: tcp)
   -v, --verbose                              Increase verbosity
   -vv, --more_verbose                        Increase more verbosity
-  -vvv, --much_more_verbose                  Increase more verbosity
+  -vvv, --much_more_verbose                  Increase much more verbosity
   -user USER                                 Username
   -pass PWD                                  Password
   -ipdst IPDST                               IP to scan (default: 127.0.0.1)
