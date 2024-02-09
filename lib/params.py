@@ -255,6 +255,7 @@ Port scanner via TURN connection. It is possible to scan remote computers, from 
     parser.add_argument('-pass', type=str, help='Password', dest="pwd", required=True)
     parser.add_argument('-ipdst', type=str, help='IP to scan (default: 127.0.0.1)', dest='ipdst', default='127.0.0.1')
     parser.add_argument('-ports', type=str, help='Ports to scan. Ex: 80 | 80,8080 | 1-1000 | 21,22,80,1000-2000 | ALL for 1-65536 (default: ALL)', dest='ports', default='ALL')
+    parser.add_argument('-fp', '--fingerprinting', help='Fingerprinting', dest="fp", action="count")
 
     # Array for all arguments passed to script
     args = parser.parse_args()
@@ -275,8 +276,9 @@ Port scanner via TURN connection. It is possible to scan remote computers, from 
         PWD = args.pwd
         IPDST = args.ipdst
         PORTS = args.ports
+        FP = args.fp
 
-        return IPADDR, HOST, PORT, PROTO, VERBOSE, USER, PWD, IPDST, PORTS
+        return IPADDR, HOST, PORT, PROTO, VERBOSE, USER, PWD, IPDST, PORTS, FP
     except ValueError:
         sys.exit(1)
 

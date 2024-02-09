@@ -347,6 +347,21 @@ def attributes_parse(buf):
             attribute_length *= 2
 
             attribute_value = buf[i + 8:i + 8 + attribute_length]
+
+            if attribute_type[0:17] == 'unknown attribute':
+                ascii = ''
+                ascii_len = len(attribute_value)
+
+                for x in range (0, ascii_len, 2):
+                    val = attribute_value[x:x+2]
+                    try:
+                        ascii += bytes.fromhex(val).decode("ascii")
+                    except:
+                        pass
+
+                if ascii != '':
+                    attribute_value = ascii
+
             # print(buf[i + 0:i + 4])
             # print(buf[i + 4:i + 8])
             # print(attribute_length)
@@ -359,7 +374,7 @@ def attributes_parse(buf):
                 else:
                     if attribute_value == '00000401556e617574686f72697a6564':
                         attribute[attribute_type] = '401 Unauthorized'
-                    else:    
+                    else:
                         attribute[attribute_type] = bytes.fromhex(
                             attribute_value).decode("ascii")
             except:
