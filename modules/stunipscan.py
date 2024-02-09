@@ -98,18 +98,22 @@ class StunIpscan:
             for ipaddr in self.listips:
                 ipport = ipaddr + ':80'
 
-                self.scan(transport, ipaddr, ipport)
+                r = self.scan(transport, ipaddr, ipport)
+                if r == -1:
+                    exit()
         else:
-            self.scan(transport, ipaddr, ipport)
+            r = self.scan(transport, ipaddr, ipport)
 
         transport = '06'
         if self.destip == '':
             for ipaddr in self.listips:
                 ipport = ipaddr + ':80'
 
-                self.scan(transport, ipaddr, ipport)
+                r = self.scan(transport, ipaddr, ipport)
+                if r == -1:
+                    exit()
         else:
-            self.scan(transport, ipaddr, ipport)
+            r = self.scan(transport, ipaddr, ipport)
 
     def scan(self, transport, ipaddr, ipport):
         if transport == '06':
@@ -123,162 +127,172 @@ class StunIpscan:
             print(self.c.RED + 'Failed to create socket')
             return
 
-        # try:
-        sock.settimeout(2)
+        try:
+            sock.settimeout(2)
 
-        addr = (self.ip, self.rport)
+            addr = (self.ip, self.rport)
 
-        if self.proto == 'TCP':
-            sock.connect(addr)
+            if self.proto == 'TCP':
+                sock.connect(addr)
 
-        if self.proto == 'TLS':
-            sock_ssl = ssl.wrap_socket(
-                sock, ssl_version=ssl.PROTOCOL_TLS, ciphers='DEFAULT', cert_reqs=ssl.CERT_NONE)
+            if self.proto == 'TLS':
+                sock_ssl = ssl.wrap_socket(
+                    sock, ssl_version=ssl.PROTOCOL_TLS, ciphers='DEFAULT', cert_reqs=ssl.CERT_NONE)
 
-            sock_ssl.connect(addr)
+                sock_ssl.connect(addr)
 
-        # First request to obtain nonce and realm values: Allocate Request
-        transaction_id = random.randint(0, 0xFFFFFFFFFFFFFFFFFFFF)
+            # First request to obtain nonce and realm values: Allocate Request
+            transaction_id = random.randint(0, 0xFFFFFFFFFFFFFFFFFFFF)
 
-        message = build_request(3, transaction_id, transport, True, '')
+            message = build_request(3, transaction_id, transport, True, '')
 
-        if self.verbose == 1:
-            print(self.c.BWHITE + "[+] Request 1 (Allocate Request)")
-            print(self.c.GREEN + message.hex())
-            print(self.c.WHITE)
+            if self.verbose == 1:
+                print(self.c.BWHITE + "[+] Request 1 (Allocate Request)")
+                print(self.c.GREEN + message.hex())
+                print(self.c.WHITE)
 
-            headers = header_parse(message.hex()[0:40])
-            attributes = attributes_parse(message.hex()[40:])
+                headers = header_parse(message.hex()[0:40])
+                attributes = attributes_parse(message.hex()[40:])
 
-            print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
-            print(headers)
-            print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
-            print(attributes)
-            print(self.c.WHITE)
+                print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
+                print(headers)
+                print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
+                print(attributes)
+                print(self.c.WHITE)
 
-        if self.proto == 'TLS':
-            sock_ssl.sendall(message)
-            response = sock_ssl.recv(1024)
-        else:
-            sock.sendto(message, addr)
-            response = sock.recv(1024)
+            if self.proto == 'TLS':
+                sock_ssl.sendall(message)
+                response = sock_ssl.recv(1024)
+            else:
+                sock.sendto(message, addr)
+                response = sock.recv(1024)
 
-        if self.verbose == 1:
-            print(self.c.BWHITE + "[+] Response 1")
-            print(self.c.YELLOW + str(response.hex()))
-            print(self.c.WHITE)
+            if self.verbose == 1:
+                print(self.c.BWHITE + "[+] Response 1")
+                print(self.c.YELLOW + str(response.hex()))
+                print(self.c.WHITE)
 
-        headers = header_parse(response.hex()[0:40])
-        attributes = attributes_parse(response.hex()[40:])
+            headers = header_parse(response.hex()[0:40])
+            attributes = attributes_parse(response.hex()[40:])
 
-        if self.verbose == 1:
-            print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
-            print(headers)
-            print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
-            print(attributes)
-            print(self.c.WHITE)
+            if self.verbose == 1:
+                print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
+                print(headers)
+                print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
+                print(attributes)
+                print(self.c.WHITE)
 
-        realm = attributes['REALM']
-        nonce = attributes['NONCE']
+            realm = attributes['REALM']
+            nonce = attributes['NONCE']
 
-        # Second request: Allocate Request
-        message = build_request(
-            3, transaction_id, transport, False, '', self.user, realm, nonce, self.pwd)
+            # Second request: Allocate Request
+            message = build_request(
+                3, transaction_id, transport, False, '', self.user, realm, nonce, self.pwd)
 
-        if self.verbose == 1:
-            print(self.c.BWHITE + "[+] Request 2 (Allocate Request)")
-            print(self.c.GREEN + message.hex())
-            print(self.c.WHITE)
+            if self.verbose == 1:
+                print(self.c.BWHITE + "[+] Request 2 (Allocate Request)")
+                print(self.c.GREEN + message.hex())
+                print(self.c.WHITE)
 
-            headers = header_parse(message.hex()[0:40])
-            attributes = attributes_parse(message.hex()[40:])
+                headers = header_parse(message.hex()[0:40])
+                attributes = attributes_parse(message.hex()[40:])
 
-            print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
-            print(headers)
-            print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
-            print(attributes)
-            print(self.c.WHITE)
+                print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
+                print(headers)
+                print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
+                print(attributes)
+                print(self.c.WHITE)
 
-        if self.proto == 'TLS':
-            sock_ssl.sendall(message)
-            response = sock_ssl.recv(1024)
-        else:
-            sock.sendto(message, addr)
-            response = sock.recv(1024)
+            if self.proto == 'TLS':
+                sock_ssl.sendall(message)
+                response = sock_ssl.recv(1024)
+            else:
+                sock.sendto(message, addr)
+                response = sock.recv(1024)
 
-        if self.verbose == 1:
-            print(self.c.BWHITE + "[+] Response 2")
-            print(self.c.YELLOW + response.hex())
-            print(self.c.WHITE)
+            if self.verbose == 1:
+                print(self.c.BWHITE + "[+] Response 2")
+                print(self.c.YELLOW + response.hex())
+                print(self.c.WHITE)
 
-        headers = header_parse(response.hex()[0:40])
-        attributes = attributes_parse(response.hex()[40:])
+            headers = header_parse(response.hex()[0:40])
+            attributes = attributes_parse(response.hex()[40:])
 
-        if self.verbose == 1:
-            print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
-            print(headers)
-            print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
-            print(attributes)
-            print(self.c.WHITE)
+            if self.verbose == 1:
+                print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
+                print(headers)
+                print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
+                print(attributes)
+                print(self.c.WHITE)
 
-        message = build_request(
-            8, transaction_id, transport, False, ipport, self.user, realm, nonce, self.pwd)
+            message = build_request(
+                8, transaction_id, transport, False, ipport, self.user, realm, nonce, self.pwd)
 
-        if self.verbose == 1:
-            print(self.c.BWHITE + "[+] Request 3 (Create Perm Request)")
-            print(self.c.GREEN + message.hex())
-            print(self.c.WHITE)
+            if self.verbose == 1:
+                print(self.c.BWHITE + "[+] Request 3 (Create Perm Request)")
+                print(self.c.GREEN + message.hex())
+                print(self.c.WHITE)
 
-            headers = header_parse(message.hex()[0:40])
-            attributes = attributes_parse(message.hex()[40:])
+                headers = header_parse(message.hex()[0:40])
+                attributes = attributes_parse(message.hex()[40:])
 
-            print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
-            print(headers)
-            print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
-            print(attributes)
-            print(self.c.WHITE)
+                print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
+                print(headers)
+                print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
+                print(attributes)
+                print(self.c.WHITE)
 
-        if self.proto == 'TLS':
-            sock_ssl.sendall(message)
-            response = sock_ssl.recv(1024)
-        else:
-            sock.sendto(message, addr)
-            response = sock.recv(1024)
+            if self.proto == 'TLS':
+                sock_ssl.sendall(message)
+                response = sock_ssl.recv(1024)
+            else:
+                sock.sendto(message, addr)
+                response = sock.recv(1024)
 
-        if self.verbose == 1:
-            print(self.c.BWHITE + "[+] Response 3")
-            print(self.c.YELLOW + response.hex())
-            print(self.c.WHITE)
+            if self.verbose == 1:
+                print(self.c.BWHITE + "[+] Response 3")
+                print(self.c.YELLOW + response.hex())
+                print(self.c.WHITE)
 
-        headers = header_parse(response.hex()[0:40])
-        attributes = attributes_parse(response.hex()[40:])
+            headers = header_parse(response.hex()[0:40])
+            attributes = attributes_parse(response.hex()[40:])
 
-        if self.verbose == 1:
-            print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
-            print(headers)
-            print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
-            print(attributes)
-            print(self.c.WHITE)
+            if self.verbose == 1:
+                print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
+                print(headers)
+                print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
+                print(attributes)
+                print(self.c.WHITE)
 
-        if headers['MESSAGE_TYPE'] == 'Create Perm Response':
-            print(
-                self.c.BWHITE + '[✓] ' + ipaddr + '/' + tr + ': ' + self.c.GREEN + 'Successfully connected' + self.c.WHITE)
-        else:
-            message_tytpe = headers['MESSAGE_TYPE']
             try:
-                errorcode = attributes['ERROR-CODE']
+                if attributes['ERROR-CODE'] == '401 Unauthorized':
+                    print(self.c.RED + 'Wrong user/pass')
+                    print(self.c.WHITE)
+                    return -1
             except:
-                errorcode = ''
-            print(
-                self.c.BWHITE + '[x] ' + ipaddr + '/' + tr + ': ' + self.c.YELLOW + message_tytpe + ' (' + self.c.RED + errorcode + self.c.YELLOW + ')' + self.c.WHITE)
-        # except socket.timeout:
-        #     print(
-        #         self.c.BWHITE + '[x] ' + ipaddr + '/' + tr + ': ' + self.c.RED + 'Error' + self.c.WHITE)
-        #     pass
-        # except:
-        #     pass
-        # finally:
-        #     sock.close()
+                pass
 
-        # if self.proto == 'TLS':
-        #     sock_ssl.close()
+            if headers['MESSAGE_TYPE'] == 'Create Perm Response':
+                print(
+                    self.c.BWHITE + '[✓] ' + ipaddr + '/' + tr + ': ' + self.c.GREEN + 'Successfully connected' + self.c.WHITE)
+            else:
+                message_tytpe = headers['MESSAGE_TYPE']
+                try:
+                    errorcode = attributes['ERROR-CODE']
+                except:
+                    errorcode = ''
+                print(
+                    self.c.BWHITE + '[x] ' + ipaddr + '/' + tr + ': ' + self.c.YELLOW + message_tytpe + ' (' + self.c.RED + errorcode + self.c.YELLOW + ')' + self.c.WHITE)
+        except socket.timeout:
+            print(
+                self.c.BWHITE + '[x] ' + ipaddr + '/' + tr + ': ' + self.c.RED + 'Error' + self.c.WHITE)
+            pass
+        except:
+            pass
+        finally:
+            sock.close()
+
+        if self.proto == 'TLS':
+            sock_ssl.close()
+            
+        return 0

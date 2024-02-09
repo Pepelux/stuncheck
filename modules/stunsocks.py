@@ -133,6 +133,10 @@ class StunSocks:
                     # send data through the TURN server
                     if conn_status == 0:
                         response = self.socks_init(addr, port)
+                        
+                        if response == -1:
+                            client_socket.close()
+                            self.socks_close()
 
                     response = self.socks_send(data)
                     conn_status = 1
@@ -278,10 +282,16 @@ class StunSocks:
                     print(self.c.BWHITE + "[<=] " + self.c.YELLOW + headers['MESSAGE_TYPE'] +
                           self.c.RED + ' (' + attributes['ERROR-CODE'] + ')' + self.c.WHITE)
                 if attributes['ERROR-CODE']:
-                    print(self.c.BWHITE + "[x] Connection error: " +
-                          self.c.RED + 'Relay not allowed' + self.c.WHITE)
-                    print()
-                exit()
+                    if attributes['ERROR-CODE'] == '401 Unauthorized':
+                        print(self.c.WHITE)
+                        print(self.c.RED + 'Wrong user/pass')
+                        print(self.c.WHITE)
+                    else:
+                        print(self.c.WHITE)
+                        print(self.c.RED + attributes['ERROR-CODE'])
+                        print(self.c.WHITE)
+
+                    return -1
             except:
                 if self.verbose > 0:
                     print(

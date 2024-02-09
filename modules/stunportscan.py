@@ -21,7 +21,7 @@ class StunPortscan:
         self.proto = 'UDP'
         self.verbose = '0'
         self.ipdst = ''
-        self.ports = 'ALL'
+        self.ports = ''
         self.fp = 0
 
         self.quit = False
@@ -38,6 +38,9 @@ class StunPortscan:
 
         if self.verbose == None:
             self.verbose = 0
+
+        if self.ports == '':
+            self.ports = '21,22,23,25,53,80,110,111,135,139,143,443,445,993,995,1723,3306,3389,5900,8080'
 
         # check protocol
         if self.proto not in supported_protos:
@@ -245,6 +248,14 @@ class StunPortscan:
                             print(
                                 self.c.BWHITE + '[x] Port : ' + self.c.YELLOW + str(port) + self.c.RED + ' closed')
 
+                try:
+                    if attributes['ERROR-CODE'] == '401 Unauthorized':
+                        print(self.c.RED + 'Wrong user/pass')
+                        print(self.c.WHITE)
+                        exit()
+                except:
+                    pass
+
                 # Fingerprinting
                 if self.fp == 1:
                     try:
@@ -257,7 +268,7 @@ class StunPortscan:
                             print(self.c.RED + 'Failed to create socket')
                             exit()
 
-                        sock2.settimeout(5)
+                        sock2.settimeout(2)
 
                         if self.proto == 'TCP':
                             sock2.connect(addr)
@@ -311,15 +322,24 @@ class StunPortscan:
                         print(attributes)
                         print(self.c.WHITE)
 
+                    version = ''
+                    for x in range(1, 6):
+                        try:
+                            att = 'unknown attribute ' + str(x)
+                            version = attributes[att]
+                            print(self.c.RED + version + self.c.WHITE)
+                        except:
+                            pass
 
-                    if p == '80':
+                    if version == '':
                         data = b'GET HTTP/1.0\r\n'
-                        if self.proto == 'TLS':
-                            sock_ssl2.sendall(data)
-                        else:
-                            sock2.sendto(data, addr)
 
                         try:
+                            if self.proto == 'TLS':
+                                sock_ssl2.sendall(data)
+                            else:
+                                sock2.sendto(data, addr)
+
                             if self.proto == 'TLS':
                                 response = sock_ssl2.recv(4096)
                             else:
@@ -328,14 +348,6 @@ class StunPortscan:
                             response_clear = response.decode()                        
                             pos = response_clear.find('<')
                             print(self.c.RED + response_clear[0:pos] + self.c.WHITE)
-                        except:
-                            pass
-
-                    for x in range(1, 6):
-                        try:
-                            att = 'unknown attribute ' + str(x)
-                            version = attributes[att]
-                            print(self.c.RED + version + self.c.WHITE)
                         except:
                             pass
 

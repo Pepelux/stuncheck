@@ -193,8 +193,8 @@ class StunLogin:
                     print(self.c.BWHITE + '[✓] ' +
                           self.c.GREEN + 'Connection successful')
                 else:
-                    print(self.c.BWHITE + '[x] ' +
-                          self.c.RED + 'Connection error')
+                    print(self.c.WHITE)
+                    print(self.c.RED + 'Wrong user/pass')
         except socket.timeout:
             print(self.c.RED + "Socket Timeout" + self.c.WHITE)
             exit()
