@@ -6,7 +6,7 @@ from lib.params import get_stunipscan_args
 
 
 def main():
-    ip, host, rport, proto, verbose, user, pwd, destip = get_stunipscan_args()
+    ip, host, rport, proto, verbose, user, pwd, ipdst = get_stunipscan_args()
 
     s = StunIpscan()
     s.ip = ip
@@ -16,7 +16,7 @@ def main():
     s.verbose = verbose
     s.user = user
     s.pwd = pwd
-    s.destip = destip
+    s.ipdst = ipdst
 
     s.start()
 

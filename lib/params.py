@@ -44,7 +44,7 @@ STUN/TURN server scanner.
     # Add arguments
     parser.add_argument('-i', '--ip', type=str, help='Host/IP address/network (ex: mystunserver.com | 192.168.0.10 | 192.168.0.0/24)', dest="ipaddr")
     parser.add_argument('-r', '--remote_port', type=str, help='Ports to scan. Ex: 3478 | 3478,5349 | 3400-3500 | 3470,5000,5300-5400 | ALL for 1-65536 (default: 3478/udp or 5349/tcp)', dest='remote_port', default='3478')
-    parser.add_argument('-p', '--proto', type=str, help='Protocol: udp|tcp|tls|all (default: udp)', dest='proto', default='udp')
+    parser.add_argument('-p', '--proto', type=str, help=' Protocol to connect TURN server udp|tcp|tls|all (default: udp)', dest='proto', default='udp')
     parser.add_argument('-th', '--threads', type=int, help='Number of threads (default: 200)', dest='threads', default=200)
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
@@ -104,7 +104,7 @@ Get info about a STUN/TURN server.
     # Add arguments
     parser.add_argument('-i', '--ip', type=str, help='Target IP address', dest="ipaddr", required=True)
     parser.add_argument('-r', '--remote_port', type=int, help='Remote port (default: 3478)', dest='remote_port', default=3478)
-    parser.add_argument('-p', '--proto', type=str, help='Protocol: udp|tcp|tls (default: udp)', dest='proto', default='udp')
+    parser.add_argument('-p', '--proto', type=str, help=' Protocol to connect TURN server udp|tcp|tls (default: udp)', dest='proto', default='udp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
 
@@ -149,7 +149,7 @@ Check user/password access to a STUN server.
     # Add arguments
     parser.add_argument('-i', '--ip', type=str, help='Target IP address', dest="ipaddr", required=True)
     parser.add_argument('-r', '--remote_port', type=int, help='Remote port (default: 3478)', dest='remote_port', default=3478)
-    parser.add_argument('-p', '--proto', type=str, help='Protocol: udp|tcp|tls (default: udp)', dest='proto', default='udp')
+    parser.add_argument('-p', '--proto', type=str, help=' Protocol to connect TURN server udp|tcp|tls (default: udp)', dest='proto', default='udp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
     parser.add_argument('-user', type=str, help='Username', dest="user", required=True)
@@ -198,7 +198,7 @@ Bruteforce transports of a STUN server.
     # Add arguments
     parser.add_argument('-i', '--ip', type=str, help='Target IP address', dest="ipaddr", required=True)
     parser.add_argument('-r', '--remote_port', type=int, help='Remote port (default: 3478)', dest='remote_port', default=3478)
-    parser.add_argument('-p', '--proto', type=str, help='Protocol: udp|tcp|tls (default: udp)', dest='proto', default='udp')
+    parser.add_argument('-p', '--proto', type=str, help=' Protocol to connect TURN server udp|tcp|tls (default: udp)', dest='proto', default='udp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
     parser.add_argument('-user', type=str, help='Username', dest="user", required=True)
@@ -240,14 +240,14 @@ def get_stunportscan_args():
 
 ''' + BBLUE + ''' -= STUN portscan =-''' + WHITE,
         epilog=BWHITE + '''
-Port scanner via TURN connection. It is possible to scan remote computers, from the internal network or the machine itself if it allows localhost connections.
+TCP Port scanner via TURN connection. It is possible to scan remote computers, from the internal network or the machine itself if it allows localhost connections.
  
 ''')
 
     # Add arguments
     parser.add_argument('-i', '--ip', type=str, help='Target IP address', dest="ipaddr", required=True)
     parser.add_argument('-r', '--remote_port', type=int, help='Remote port (default: 3478)', dest='remote_port', default=3478)
-    parser.add_argument('-p', '--proto', type=str, help='Protocol: tcp|tls (default: tcp)', dest='proto', default='tcp')
+    parser.add_argument('-p', '--proto', type=str, help=' Protocol to connect TURN server tcp|tls (default: tcp)', dest='proto', default='tcp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
     parser.add_argument('-vvv', '--much_more_verbose', help='Increase much more verbosity', dest='much_more_verbose', action="count")
@@ -306,11 +306,11 @@ Tries to access to several pre-established IP addresses (or a specific IP addres
     # Add arguments
     parser.add_argument('-i', '--ip', type=str, help='Target IP address', dest="ipaddr", required=True)
     parser.add_argument('-r', '--remote_port', type=int, help='Remote port (default: 3478)', dest='remote_port', default=3478)
-    parser.add_argument('-p', '--proto', type=str, help='Protocol: tcp|tls (default: tcp)', dest='proto', default='tcp')
+    parser.add_argument('-p', '--proto', type=str, help=' Protocol to connect TURN server tcp|tls (default: tcp)', dest='proto', default='tcp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-user', type=str, help='Username', dest="user", required=True)
     parser.add_argument('-pass', type=str, help='Password', dest="pwd", required=True)
-    parser.add_argument('-dip', '--dest-ip', type=str, help='IP address to check connection', dest="destip", default='')
+    parser.add_argument('-ipdst', type=str, help='IP address to check connection', dest="ipdst", default='')
 
     # Array for all arguments passed to script
     args = parser.parse_args()
@@ -323,9 +323,9 @@ Tries to access to several pre-established IP addresses (or a specific IP addres
         VERBOSE = args.verbose
         USER = args.user
         PWD = args.pwd
-        DESTIP = args.destip
+        IPDST = args.ipdst
 
-        return IPADDR, HOST, PORT, PROTO, VERBOSE, USER, PWD, DESTIP
+        return IPADDR, HOST, PORT, PROTO, VERBOSE, USER, PWD, IPDST
     except ValueError:
         sys.exit(1)
 
@@ -353,7 +353,7 @@ Relay traffic using a SOCK5 proxy.
     # Add arguments
     parser.add_argument('-i', '--ip', type=str, help='Target IP address', dest="ipaddr", required=True)
     parser.add_argument('-r', '--remote_port', type=int, help='Remote port (default: 3478)', dest='remote_port', default=3478)
-    parser.add_argument('-p', '--proto', type=str, help='Protocol: tcp|tls (default: tcp)', dest='proto', default='tcp')
+    parser.add_argument('-p', '--proto', type=str, help=' Protocol to connect TURN server tcp|tls (default: tcp)', dest='proto', default='tcp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
     parser.add_argument('-user', type=str, help='Username', dest="user", required=True)

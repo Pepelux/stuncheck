@@ -26,7 +26,7 @@ class StunIpscan:
         self.user = ''
         self.pwd = ''
 
-        self.destip = ''
+        self.ipdst = ''
 
         self.listips = {
             "0.0.0.0",
@@ -89,12 +89,12 @@ class StunIpscan:
               self.proto.upper())
         print(self.c.WHITE)
 
-        if self.destip != '':
-            ipaddr = self.destip
+        if self.ipdst != '':
+            ipaddr = self.ipdst
             ipport = ipaddr + ':80'
 
         transport = '11'
-        if self.destip == '':
+        if self.ipdst == '':
             for ipaddr in self.listips:
                 ipport = ipaddr + ':80'
 
@@ -105,7 +105,7 @@ class StunIpscan:
             r = self.scan(transport, ipaddr, ipport)
 
         transport = '06'
-        if self.destip == '':
+        if self.ipdst == '':
             for ipaddr in self.listips:
                 ipport = ipaddr + ':80'
 

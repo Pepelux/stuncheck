@@ -147,8 +147,8 @@ class StunScan:
                 print('Error reading file %s' % self.file)
                 exit()
         else:
+            ips = []
             for i in self.ip.split(','):
-                ips = []
                 hosts = []
                 error = 0
 

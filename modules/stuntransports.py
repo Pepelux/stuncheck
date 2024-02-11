@@ -7,7 +7,7 @@ import ssl
 import sys
 from lib.color import Color
 from lib.logos import Logo
-from lib.functions import header_parse, attributes_parse, build_request
+from lib.functions import header_parse, attributes_parse, build_request, get_protocol
 
 
 class StunTransports:
@@ -183,8 +183,8 @@ class StunTransports:
                 print(self.c.WHITE)
             else:
                 if headers['MESSAGE_TYPE'] == 'Allocate Success Response':
-                    print(self.c.BWHITE + '[✓] Proto %s ' %
-                          protocol + self.c.GREEN + 'Connection successful')
+                    print(self.c.BWHITE + '[✓] Proto %s (%s) ' %
+                          (protocol, get_protocol(protocol)) + self.c.GREEN + 'Connection successful')
                 else:
                     if self.verbose > 0:
                         print(self.c.BWHITE + '[x] Proto %s ' %
