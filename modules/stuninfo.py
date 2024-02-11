@@ -106,6 +106,8 @@ class StunInfo:
         message += b"\x21\x12\xa4\x42"      # Magic Cookie
         message += transactionID.tobytes()  # Transaction ID
 
+        print(self.c.BYELLOW + 'STUN info ... ' + self.c.WHITE)
+
         if self.verbose > 0:
             try:
                 headers = header_parse(message.hex()[0:40])
@@ -175,7 +177,7 @@ class StunInfo:
                         print(self.c.BWHITE + '  [-]  ' + a + ": " +
                               self.c.GREEN + hex_string + self.c.WHITE)
         except:
-            print(self.c.RED + 'Error getting data' + self.c.WHITE)
+            print(self.c.RED + 'Error getting data. The server does not support the STUN protocol' + self.c.WHITE)
 
         print(self.c.WHITE)
 
@@ -230,7 +232,7 @@ class StunInfo:
         else:
             tr = 'Unknown'
 
-        print(self.c.BYELLOW + 'Transport ... ' + tr + self.c.WHITE)
+        print(self.c.BYELLOW + 'TURN: Transport ... ' + tr + self.c.WHITE)
 
         try:
             headers = header_parse(response.hex()[0:40])
@@ -282,6 +284,6 @@ class StunInfo:
                         print(self.c.BWHITE + '  [-]  ' + a + ": " +
                               self.c.GREEN + hex_string + self.c.WHITE)
         except:
-            print(self.c.RED + 'Error' + self.c.WHITE)
+            print(self.c.RED + 'Error getting data. The TURN server does not support the ' + tr + ' protocol' + self.c.WHITE)
 
         print(self.c.WHITE)

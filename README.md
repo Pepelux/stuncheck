@@ -13,7 +13,7 @@ options:
   -h, --help                                 show this help message and exit
   -i IPADDR, --ip IPADDR                     Host/IP address/network (ex: mystunserver.com | 192.168.0.10 | 192.168.0.0/24)
   -r REMOTE_PORT, --remote_port REMOTE_PORT  Ports to scan. Ex: 3478 | 3478,5349 | 3400-3500 | 3470,5000,5300-5400 | ALL for 1-65536 (default: 3478/udp or 5349/tcp)
-  -p PROTO, --proto PROTO                    Protocol to connect TURN server: udp|tcp|tls|all (default: udp)
+  -proto PROTO                               Protocol to connect TURN server: udp|tcp|tls|all (default: udp)
   -th THREADS, --threads THREADS             Number of threads (default: 200)
   -v, --verbose                              Increase verbosity
   -vv, --more_verbose                        Increase more verbosity
@@ -34,7 +34,7 @@ options:
   -h, --help                                 show this help message and exit
   -i IPADDR, --ip IPADDR                     Target IP address
   -r REMOTE_PORT, --remote_port REMOTE_PORT  Remote port (default: 3478)
-  -p PROTO, --proto PROTO                    Protocol to connect TURN server: udp|tcp|tls (default: udp)
+  -proto PROTO                               Protocol to connect TURN server: udp|tcp|tls (default: udp)
   -v, --verbose                              Increase verbosity
   -vv, --more_verbose                        Increase more verbosity
 ```
@@ -107,7 +107,7 @@ options:
   -r REMOTE_PORT, --remote_port REMOTE_PORT  Remote port (default: 3478 for udp/tcp and 5349 for tls). ALL for all ports
   -o OFILE, --output_file OFILE              Save output into a PCAP file
   -f FILE, --_file FILE                      Save output into a TXT file
-  -p PROTO, --proto PROTO                    Protocol to sniff to connect TURN server: udp|tcp|tls|all
+  -proto PROTO                               Protocol to sniff to connect TURN server: udp|tcp|tls|all
   -rtp                                       Filter only RTP traffic
   -v, --verbose                              Increase verbosity (no data displayed by default)
   -vv, --more_verbose                        Increase more verbosity
@@ -125,11 +125,11 @@ options:
   -h, --help                                 show this help message and exit
   -i IPADDR, --ip IPADDR                     Target IP address
   -r REMOTE_PORT, --remote_port REMOTE_PORT  Remote port (default: 3478)
-  -p PROTO, --proto PROTO                    Protocol to connect TURN server: udp|tcp|tls (default: udp)
+  -proto PROTO                               Protocol to connect TURN server: udp|tcp|tls (default: udp)
   -v, --verbose                              Increase verbosity
   -vv, --more_verbose                        Increase more verbosity
-  -user USER                                 Username
-  -pass PWD                                  Password
+  -u USER, --user USER                       Username
+  -p PWD, --pass PWD                         Password
 ```
 
 Example:
@@ -172,11 +172,11 @@ options:
   -h, --help                                 show this help message and exit
   -i IPADDR, --ip IPADDR                     Target IP address
   -r REMOTE_PORT, --remote_port REMOTE_PORT  Remote port (default: 3478)
-  -p PROTO, --proto PROTO                    Protocol to connect TURN server: udp|tcp|tls (default: udp)
+  -proto PROTO                               Protocol to connect TURN server: udp|tcp|tls (default: udp)
   -v, --verbose                              Increase verbosity
   -vv, --more_verbose                        Increase more verbosity
-  -user USER                                 Username
-  -pass PWD                                  Password
+  -u USER, --user USER                       Username
+  -p PWD, --pass PWD                         Password
 ```
 
 Example:
@@ -213,10 +213,10 @@ options:
   -h, --help                                 show this help message and exit
   -i IPADDR, --ip IPADDR                     Target IP address
   -r REMOTE_PORT, --remote_port REMOTE_PORT  Remote port (default: 3478)
-  -p PROTO, --proto PROTO                    Protocol to connect TURN server: tcp|tls (default: tcp)
+  -proto PROTO                               Protocol to connect TURN server: tcp|tls (default: tcp)
   -v, --verbose                              Increase verbosity
-  -user USER                                 Username
-  -pass PWD                                  Password
+  -u USER, --user USER                       Username
+  -p PWD, --pass PWD                         Password
   -ipdst IPDST                               IP address to check connection
 ```
 
@@ -317,12 +317,12 @@ options:
   -h, --help                                 show this help message and exit
   -i IPADDR, --ip IPADDR                     Target IP address
   -r REMOTE_PORT, --remote_port REMOTE_PORT  Remote port (default: 3478)
-  -p PROTO, --proto PROTO                    Protocol to connect TURN server: tcp|tls (default: tcp)
+  -proto PROTO                               Protocol to connect TURN server: tcp|tls (default: tcp)
   -v, --verbose                              Increase verbosity
   -vv, --more_verbose                        Increase more verbosity
   -vvv, --much_more_verbose                  Increase much more verbosity
-  -user USER                                 Username
-  -pass PWD                                  Password
+  -u USER, --user USER                       Username
+  -p PWD, --pass PWD                         Password
   -ipdst IPDST                               IP to scan (default: 127.0.0.1)
   -ports PORTS                               Ports to scan. Ex: 80 | 80,8080 | 1-1000 | 21,22,80,1000-2000 | ALL for 1-65536 (default: ALL)
   -fp, --fingerprinting                      Fingerprinting
@@ -383,11 +383,11 @@ options:
   -h, --help                                 show this help message and exit
   -i IPADDR, --ip IPADDR                     Target IP address
   -r REMOTE_PORT, --remote_port REMOTE_PORT  Remote port (default: 3478)
-  -p PROTO, --proto PROTO                    Protocol to connect TURN server: tcp|tls (default: tcp)
+  -proto PROTO                               Protocol to connect TURN server: tcp|tls (default: tcp)
   -v, --verbose                              Increase verbosity
   -vv, --more_verbose                        Increase more verbosity
-  -user USER                                 Username
-  -pass PWD                                  Password
+  -u USER, --user USER                       Username
+  -p PWD, --pass PWD                         Password
   -serverip SERVERIP                         Local SOCK5 server IP address (default: 127.0.0.1)
   -serverport SERVERPORT                     Local SOCK5 server port (default: 1080)
 ```

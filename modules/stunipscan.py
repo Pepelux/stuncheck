@@ -62,6 +62,8 @@ class StunIpscan:
             "169.254.169.254",
             "192.88.99.0"
         }
+        
+        self.quit = False
 
     def start(self):
         supported_protos = ['TCP', 'TLS']
@@ -96,10 +98,13 @@ class StunIpscan:
         transport = '11'
         if self.ipdst == '':
             for ipaddr in self.listips:
-                ipport = ipaddr + ':80'
+                if self.quit == False:
+                    ipport = ipaddr + ':80'
 
-                r = self.scan(transport, ipaddr, ipport)
-                if r == -1:
+                    r = self.scan(transport, ipaddr, ipport)
+                    if r == -1:
+                        exit()
+                else:
                     exit()
         else:
             r = self.scan(transport, ipaddr, ipport)
@@ -107,10 +112,13 @@ class StunIpscan:
         transport = '06'
         if self.ipdst == '':
             for ipaddr in self.listips:
-                ipport = ipaddr + ':80'
+                if self.quit == False:
+                    ipport = ipaddr + ':80'
 
-                r = self.scan(transport, ipaddr, ipport)
-                if r == -1:
+                    r = self.scan(transport, ipaddr, ipport)
+                    if r == -1:
+                        exit()
+                else:
                     exit()
         else:
             r = self.scan(transport, ipaddr, ipport)
@@ -283,6 +291,10 @@ class StunIpscan:
                     errorcode = ''
                 print(
                     self.c.BWHITE + '[x] ' + ipaddr + '/' + tr + ': ' + self.c.YELLOW + message_tytpe + ' (' + self.c.RED + errorcode + self.c.YELLOW + ')' + self.c.WHITE)
+        except KeyboardInterrupt:
+            print(self.c.RED + '\nYou pressed Ctrl+C!' + self.c.WHITE)
+            self.quit = True
+            return
         except socket.timeout:
             print(
                 self.c.BWHITE + '[x] ' + ipaddr + '/' + tr + ': ' + self.c.RED + 'Error' + self.c.WHITE)
