@@ -198,8 +198,8 @@ $ ./stuntransports.py -i 185.X.X.11 -user TURN_USER -pass TURN_PASS
 [✓] Port range: 3478
 [✓] Protocol: UDP
 
-[✓] Proto 06 Connection successful
-[✓] Proto 11 Connection successful
+[✓] Proto 06 (TCP) Connection successful
+[✓] Proto 11 (UDP) Connection successful
 ```
 
 # StunIpScan #
