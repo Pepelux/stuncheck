@@ -388,6 +388,7 @@ class StunScan:
 
         for x in self.found:
             (ip, port, proto, software) = x.split('###')
+            software = str(software)
             if len(ip) > iplen:
                 iplen = len(ip)
             if len(port) > polen:

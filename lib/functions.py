@@ -409,10 +409,13 @@ def xor_address_to_bits(xor_address):
 def build_request(message_type, transaction_id, protocol, force_tcp, xor_address, username=None, realm=None, nonce=None, password=None, connectionid=None):
     message_length = 0
     attributes = b""
+    
+    if username == None:
+        username = ''
 
     bytes_proto = bytes.fromhex(protocol) + b'\x00\x00\x00'
 
-    if username and realm and nonce:
+    if realm and nonce:
         # Add attributes: REQUESTED-TRANSPORT, USERNAME, REALM, and NONCE
         if message_type == 11:
             try:
@@ -443,7 +446,7 @@ def build_request(message_type, transaction_id, protocol, force_tcp, xor_address
                           0x2112A442, transaction_id.to_bytes(12, byteorder='big'))
     message += attributes
 
-    if username and realm and nonce:
+    if realm and nonce:
         message_length = len(attributes)+24
         message = struct.pack('!HHI12s', message_type, message_length, 0x2112A442,
                               transaction_id.to_bytes(12, byteorder='big')) + attributes
