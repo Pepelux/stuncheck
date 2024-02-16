@@ -178,6 +178,7 @@ class StunInfo:
                               self.c.GREEN + hex_string + self.c.WHITE)
         except:
             print(self.c.RED + 'Error getting data. The server does not support the STUN protocol' + self.c.WHITE)
+            exit()
 
         print(self.c.WHITE)
 

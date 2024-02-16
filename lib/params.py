@@ -43,7 +43,7 @@ STUN/TURN server scanner.
 
     # Add arguments
     parser.add_argument('-i', '--ip', type=str, help='Host/IP address/network (ex: mystunserver.com | 192.168.0.10 | 192.168.0.0/24)', dest="ipaddr")
-    parser.add_argument('-r', '--remote_port', type=str, help='Ports to scan. Ex: 3478 | 3478,5349 | 3400-3500 | 3470,5000,5300-5400 | ALL for 1-65536 (default: 3478/udp or 5349/tcp)', dest='remote_port', default='3478')
+    parser.add_argument('-r', '--remote_port', type=str, help='Ports to scan. Ex: 3478 | 3478,8080,37833 | 3400-3500 | 3470,5000,5300-5400 | ALL for 1-65536 (default: 3478/udp or 5349/tcp)', dest='remote_port', default='3478')
     parser.add_argument('-proto', type=str, help=' Protocol to connect TURN server udp|tcp|tls|all (default: udp)', dest='proto', default='udp')
     parser.add_argument('-th', '--threads', type=int, help='Number of threads (default: 200)', dest='threads', default=200)
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
