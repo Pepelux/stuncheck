@@ -152,8 +152,8 @@ Check user/password access to a STUN server.
     parser.add_argument('-proto', type=str, help=' Protocol to connect TURN server udp|tcp|tls (default: udp)', dest='proto', default='udp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
-    parser.add_argument('-u', '--user', type=str, help='Username', dest="user", required=True)
-    parser.add_argument('-p', '--pass', type=str, help='Password', dest="pwd", required=True)
+    parser.add_argument('-u', '--user', type=str, help='Username', dest="user")
+    parser.add_argument('-p', '--pass', type=str, help='Password', dest="pwd")
 
     # Array for all arguments passed to script
     args = parser.parse_args()
@@ -201,8 +201,8 @@ Bruteforce transports of a STUN server.
     parser.add_argument('-proto', type=str, help=' Protocol to connect TURN server udp|tcp|tls (default: udp)', dest='proto', default='udp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
-    parser.add_argument('-u', '--user', type=str, help='Username', dest="user", required=True)
-    parser.add_argument('-p', '--pass', type=str, help='Password', dest="pwd", required=True)
+    parser.add_argument('-u', '--user', type=str, help='Username', dest="user")
+    parser.add_argument('-p', '--pass', type=str, help='Password', dest="pwd")
 
     # Array for all arguments passed to script
     args = parser.parse_args()
@@ -251,8 +251,8 @@ TCP Port scanner via TURN connection. It is possible to scan remote computers, f
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
     parser.add_argument('-vvv', '--much_more_verbose', help='Increase much more verbosity', dest='much_more_verbose', action="count")
-    parser.add_argument('-u', '--user', type=str, help='Username', dest="user", required=True)
-    parser.add_argument('-p', '--pass', type=str, help='Password', dest="pwd", required=True)
+    parser.add_argument('-u', '--user', type=str, help='Username', dest="user")
+    parser.add_argument('-p', '--pass', type=str, help='Password', dest="pwd")
     parser.add_argument('-ipdst', type=str, help='IP to scan (default: 127.0.0.1)', dest='ipdst', default='127.0.0.1')
     parser.add_argument('-ports', type=str, help='Ports to scan. Ex: 80 | 80,8080 | 1-1000 | 21,22,80,1000-2000 | ALL for 1-65536 (default: TOP 20)', dest='ports', default='')
     parser.add_argument('-fp', '--fingerprinting', help='Fingerprinting', dest="fp", action="count")
@@ -308,8 +308,8 @@ Tries to access to several pre-established IP addresses (or a specific IP addres
     parser.add_argument('-r', '--remote_port', type=int, help='Remote port (default: 3478)', dest='remote_port', default=3478)
     parser.add_argument('-proto', type=str, help=' Protocol to connect TURN server tcp|tls (default: tcp)', dest='proto', default='tcp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
-    parser.add_argument('-u', '--user', type=str, help='Username', dest="user", required=True)
-    parser.add_argument('-p', '--pass', type=str, help='Password', dest="pwd", required=True)
+    parser.add_argument('-u', '--user', type=str, help='Username', dest="user")
+    parser.add_argument('-p', '--pass', type=str, help='Password', dest="pwd")
     parser.add_argument('-ipdst', type=str, help='IP address to check connection', dest="ipdst", default='')
 
     # Array for all arguments passed to script
@@ -356,8 +356,8 @@ Relay traffic using a SOCK5 proxy.
     parser.add_argument('-proto', type=str, help=' Protocol to connect TURN server tcp|tls (default: tcp)', dest='proto', default='tcp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
-    parser.add_argument('-u', '--user', type=str, help='Username', dest="user", required=True)
-    parser.add_argument('-p', '--pass', type=str, help='Password', dest="pwd", required=True)
+    parser.add_argument('-u', '--user', type=str, help='Username', dest="user")
+    parser.add_argument('-p', '--pass', type=str, help='Password', dest="pwd")
     parser.add_argument('-serverip', type=str, help='Local SOCK5 server IP address (default: 127.0.0.1)', dest='serverip', default='127.0.0.1')
     parser.add_argument('-serverport', type=int, help='Local SOCK5 server port (default: 1080)', dest='serverport', default=1080)
 

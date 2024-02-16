@@ -412,6 +412,8 @@ def build_request(message_type, transaction_id, protocol, force_tcp, xor_address
     
     if username == None:
         username = ''
+    if password == None:
+        password = ''
 
     bytes_proto = bytes.fromhex(protocol) + b'\x00\x00\x00'
 
