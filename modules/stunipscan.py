@@ -89,11 +89,20 @@ class StunIpscan:
               self.c.GREEN + '%s' % self.rport)
         print(self.c.BWHITE + '[✓] Protocol: ' + self.c.GREEN + '%s' %
               self.proto.upper())
+        print(self.c.BWHITE + '[✓] Username: ' + self.c.GREEN + '%s' %
+              self.user)
+        print(self.c.BWHITE + '[✓] Password: ' + self.c.GREEN + '%s' %
+              self.pwd)
+        if self.ipdst != '':
+            print(self.c.BWHITE + '[✓] Destination IP: ' + self.c.GREEN + '%s' %
+                self.ipdst)
         print(self.c.WHITE)
 
         if self.ipdst != '':
             ipaddr = self.ipdst
             ipport = ipaddr + ':80'
+
+        r = 0
 
         transport = '11'
         if self.ipdst == '':
@@ -109,19 +118,20 @@ class StunIpscan:
         else:
             r = self.scan(transport, ipaddr, ipport)
 
-        transport = '06'
-        if self.ipdst == '':
-            for ipaddr in self.listips:
-                if self.quit == False:
-                    ipport = ipaddr + ':80'
+        if r == 0:
+            transport = '06'
+            if self.ipdst == '':
+                for ipaddr in self.listips:
+                    if self.quit == False:
+                        ipport = ipaddr + ':80'
 
-                    r = self.scan(transport, ipaddr, ipport)
-                    if r == -1:
+                        r = self.scan(transport, ipaddr, ipport)
+                        if r == -1:
+                            exit()
+                    else:
                         exit()
-                else:
-                    exit()
-        else:
-            r = self.scan(transport, ipaddr, ipport)
+            else:
+                r = self.scan(transport, ipaddr, ipport)
 
     def scan(self, transport, ipaddr, ipport):
         if transport == '06':

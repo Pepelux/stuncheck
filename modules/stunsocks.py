@@ -58,6 +58,10 @@ class StunSocks:
               self.c.GREEN + '%s' % self.rport)
         print(self.c.BWHITE + '[✓] Protocol: ' + self.c.GREEN + '%s' %
               self.proto.upper())
+        print(self.c.BWHITE + '[✓] Username: ' + self.c.GREEN + '%s' %
+              self.user)
+        print(self.c.BWHITE + '[✓] Password: ' + self.c.GREEN + '%s' %
+              self.pwd)
         print(self.c.WHITE)
 
         # seerver SOCK5 socket

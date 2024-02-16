@@ -69,16 +69,20 @@ class StunPortscan:
               self.c.GREEN + '%s' % self.ip)
         print(self.c.BWHITE + '[✓] Remote port: ' +
               self.c.GREEN + '%s' % self.rport)
-        print(self.c.BWHITE + '[✓] Port range: ' +
-              self.c.GREEN + '%s' % self.ports)
-
-        if self.ipdst != '':
-            print(self.c.BWHITE + '[✓] IP range: ' + self.c.GREEN + '%s' % self.ipdst)
-        else:
-            print(self.c.BWHITE + '[✓] IP range: ' + self.c.GREEN + '127.0.0.1')
-
         print(self.c.BWHITE + '[✓] Protocol: ' + self.c.GREEN + '%s' %
               self.proto.upper())
+        print(self.c.BWHITE + '[✓] Username: ' + self.c.GREEN + '%s' %
+              self.user)
+        print(self.c.BWHITE + '[✓] Password: ' + self.c.GREEN + '%s' %
+              self.pwd)
+
+        if self.ipdst != '':
+            print(self.c.BWHITE + '[✓] Target IP: ' + self.c.GREEN + '%s' % self.ipdst)
+        else:
+            print(self.c.BWHITE + '[✓] Target IP: ' + self.c.GREEN + '127.0.0.1')
+
+        print(self.c.BWHITE + '[✓] Target ports: ' +
+              self.c.GREEN + '%s' % self.ports)
         print(self.c.WHITE)
 
         if self.ipdst != '':
@@ -252,127 +256,25 @@ class StunPortscan:
 
                 print(self.c.WHITE + 'Scanning ... %s' % ipdst)
 
+                wp = 0
+
                 for p in ports:
-                    try:
-                        port = p
-                        ipport = ipdst + ':' + str(port)
-
-                        message = build_request(
-                            10, transaction_id, '06', False, ipport, self.user, realm, nonce, self.pwd)
-
-                        if self.verbose > 1:
-                            print(self.c.BWHITE + "[+] Request")
-                            if self.verbose == 3:
-                                print(self.c.GREEN + message.hex())
-                                print(self.c.WHITE)
-
-                            headers = header_parse(message.hex()[0:40])
-                            attributes = attributes_parse(message.hex()[40:])
-
-                            print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
-                            print(headers)
-                            print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
-                            print(attributes)
-                            print(self.c.WHITE)
-
-                        if self.proto == 'TLS':
-                            sock_ssl.sendall(message)
-                            response = sock_ssl.recv(1024)
-                        else:
-                            sock.sendto(message, addr)
-                            response = sock.recv(1024)
-
-                        if self.verbose > 1:
-                            print(self.c.BWHITE + "[+] Response")
-                            if self.verbose == 3:
-                                print(self.c.YELLOW + response.hex())
-                                print(self.c.WHITE)
-
-                        headers = header_parse(response.hex()[0:40])
-                        attributes = attributes_parse(response.hex()[40:])
-
-                        if self.verbose == 2:
-                            print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
-                            print(headers)
-                            print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
-                            print(attributes)
-                            print(self.c.WHITE)
-                        else:
-                            if headers['MESSAGE_TYPE'] == 'Connect Success Response':
-                                print(
-                                    self.c.BWHITE + '[✓] Port : ' + self.c.YELLOW + str(port) + self.c.GREEN + ' open')
-                            else:
-                                if self.verbose == 1:
-                                    print(
-                                        self.c.BWHITE + '[x] Port : ' + self.c.YELLOW + str(port) + self.c.RED + ' closed')
-
+                    if wp == 0:
                         try:
-                            if attributes['ERROR-CODE'] == '401 Unauthorized':
-                                print(self.c.RED + 'Wrong user/pass')
-                                print(self.c.WHITE)
-                                exit()
-                        except:
-                            pass
+                            port = p
+                            ipport = ipdst + ':' + str(port)
 
-                        # Fingerprinting
-                        if self.fp == 1:
-                            try:
-                                connectionid = attributes['CONNECTION-ID']
-
-                                try:
-                                    sock2 = socket.socket(
-                                        socket.AF_INET, socket.SOCK_STREAM)
-                                except socket.error:
-                                    print(self.c.RED + 'Failed to create socket')
-                                    exit()
-
-                                sock2.settimeout(2)
-
-                                if self.proto == 'TCP':
-                                    sock2.connect(addr)
-
-                                if self.proto == 'TLS':
-                                    sock_ssl2 = ssl.wrap_socket(
-                                        sock2, ssl_version=ssl.PROTOCOL_TLS, ciphers='DEFAULT', cert_reqs=ssl.CERT_NONE)
-
-                                    sock_ssl2.connect(addr)
-
-                                # Fourth request (ConnectionBind Request)
-                                message = build_request(
-                                    11, transaction_id, '06', False, '', self.user, realm, nonce, self.pwd, connectionid)
-
-                                if self.verbose > 1:
-                                    print(self.c.BWHITE + "[+] Request")
-                                    if self.verbose == 3:
-                                        print(self.c.GREEN + message.hex())
-                                        print(self.c.WHITE)
-
-                                    headers = header_parse(message.hex()[0:40])
-                                    attributes = attributes_parse(message.hex()[40:])
-
-                                    print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
-                                    print(headers)
-                                    print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
-                                    print(attributes)
-                                    print(self.c.WHITE)
-
-                                if self.proto == 'TLS':
-                                    sock_ssl2.sendall(message)
-                                    response = sock_ssl2.recv(1024)
-                                else:
-                                    sock2.sendto(message, addr)
-                                    response = sock2.recv(1024)
-                            except:
-                                pass
-
-                            headers = header_parse(response.hex()[0:40])
-                            attributes = attributes_parse(response.hex()[40:])
+                            message = build_request(
+                                10, transaction_id, '06', False, ipport, self.user, realm, nonce, self.pwd)
 
                             if self.verbose > 1:
-                                print(self.c.BWHITE + "[+] Response")
+                                print(self.c.BWHITE + "[+] Request")
                                 if self.verbose == 3:
-                                    print(self.c.YELLOW + response.hex())
+                                    print(self.c.GREEN + message.hex())
                                     print(self.c.WHITE)
+
+                                headers = header_parse(message.hex()[0:40])
+                                attributes = attributes_parse(message.hex()[40:])
 
                                 print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
                                 print(headers)
@@ -380,44 +282,149 @@ class StunPortscan:
                                 print(attributes)
                                 print(self.c.WHITE)
 
-                            version = ''
-                            for x in range(1, 6):
+                            if self.proto == 'TLS':
+                                sock_ssl.sendall(message)
+                                response = sock_ssl.recv(1024)
+                            else:
+                                sock.sendto(message, addr)
+                                response = sock.recv(1024)
+
+                            if self.verbose > 1:
+                                print(self.c.BWHITE + "[+] Response")
+                                if self.verbose == 3:
+                                    print(self.c.YELLOW + response.hex())
+                                    print(self.c.WHITE)
+
+                            headers = header_parse(response.hex()[0:40])
+                            attributes = attributes_parse(response.hex()[40:])
+
+                            if self.verbose == 2:
+                                print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
+                                print(headers)
+                                print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
+                                print(attributes)
+                                print(self.c.WHITE)
+                            else:
+                                if headers['MESSAGE_TYPE'] == 'Connect Success Response':
+                                    print(
+                                        self.c.BWHITE + '[✓] Port : ' + self.c.YELLOW + str(port) + self.c.GREEN + ' open')
+                                else:
+                                    if self.verbose == 1:
+                                        print(
+                                            self.c.BWHITE + '[x] Port : ' + self.c.YELLOW + str(port) + self.c.RED + ' closed')
+
+                            try:
+                                if attributes['ERROR-CODE'] == '401 Unauthorized':
+                                    print(self.c.RED + 'Wrong user/pass')
+                                    print(self.c.WHITE)
+                                    wp = 1
+                            except:
+                                pass
+
+                            # Fingerprinting
+                            if self.fp == 1:
                                 try:
-                                    att = 'unknown attribute ' + str(x)
-                                    version = attributes[att]
-                                    print(self.c.RED + version + self.c.WHITE)
+                                    connectionid = attributes['CONNECTION-ID']
+
+                                    try:
+                                        sock2 = socket.socket(
+                                            socket.AF_INET, socket.SOCK_STREAM)
+                                    except socket.error:
+                                        print(self.c.RED + 'Failed to create socket')
+                                        exit()
+
+                                    sock2.settimeout(2)
+
+                                    if self.proto == 'TCP':
+                                        sock2.connect(addr)
+
+                                    if self.proto == 'TLS':
+                                        sock_ssl2 = ssl.wrap_socket(
+                                            sock2, ssl_version=ssl.PROTOCOL_TLS, ciphers='DEFAULT', cert_reqs=ssl.CERT_NONE)
+
+                                        sock_ssl2.connect(addr)
+
+                                    # Fourth request (ConnectionBind Request)
+                                    message = build_request(
+                                        11, transaction_id, '06', False, '', self.user, realm, nonce, self.pwd, connectionid)
+
+                                    if self.verbose > 1:
+                                        print(self.c.BWHITE + "[+] Request")
+                                        if self.verbose == 3:
+                                            print(self.c.GREEN + message.hex())
+                                            print(self.c.WHITE)
+
+                                        headers = header_parse(message.hex()[0:40])
+                                        attributes = attributes_parse(message.hex()[40:])
+
+                                        print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
+                                        print(headers)
+                                        print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
+                                        print(attributes)
+                                        print(self.c.WHITE)
+
+                                    if self.proto == 'TLS':
+                                        sock_ssl2.sendall(message)
+                                        response = sock_ssl2.recv(1024)
+                                    else:
+                                        sock2.sendto(message, addr)
+                                        response = sock2.recv(1024)
                                 except:
                                     pass
 
-                            if version == '':
-                                data = b'GET HTTP/1.0\r\n'
+                                headers = header_parse(response.hex()[0:40])
+                                attributes = attributes_parse(response.hex()[40:])
 
-                                try:
-                                    if self.proto == 'TLS':
-                                        sock_ssl2.sendall(data)
-                                    else:
-                                        sock2.sendto(data, addr)
+                                if self.verbose > 1:
+                                    print(self.c.BWHITE + "[+] Response")
+                                    if self.verbose == 3:
+                                        print(self.c.YELLOW + response.hex())
+                                        print(self.c.WHITE)
 
-                                    if self.proto == 'TLS':
-                                        response = sock_ssl2.recv(4096)
-                                    else:
-                                        response = sock2.recv(4096)
+                                    print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
+                                    print(headers)
+                                    print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
+                                    print(attributes)
+                                    print(self.c.WHITE)
 
-                                    response_clear = response.decode()                        
-                                    pos = response_clear.find('<')
-                                    print(self.c.RED + response_clear[0:pos] + self.c.WHITE)
-                                except:
-                                    pass
-                    except KeyboardInterrupt:
-                        print(self.c.RED + '\nYou pressed Ctrl+C!' + self.c.WHITE)
-                        self.quit = True
-                        return
-                    except socket.timeout:
-                        if self.verbose == 1:
-                            print(
-                                self.c.BWHITE + '[x] Port : ' + self.c.YELLOW + str(port) + self.c.RED + ' closed')
-                    except:
-                        pass
+                                version = ''
+                                for x in range(1, 6):
+                                    try:
+                                        att = 'unknown attribute ' + str(x)
+                                        version = attributes[att]
+                                        print(self.c.RED + version + self.c.WHITE)
+                                    except:
+                                        pass
+
+                                if version == '':
+                                    data = b'GET HTTP/1.0\r\n'
+
+                                    try:
+                                        if self.proto == 'TLS':
+                                            sock_ssl2.sendall(data)
+                                        else:
+                                            sock2.sendto(data, addr)
+
+                                        if self.proto == 'TLS':
+                                            response = sock_ssl2.recv(4096)
+                                        else:
+                                            response = sock2.recv(4096)
+
+                                        response_clear = response.decode()                        
+                                        pos = response_clear.find('<')
+                                        print(self.c.RED + response_clear[0:pos] + self.c.WHITE)
+                                    except:
+                                        pass
+                        except KeyboardInterrupt:
+                            print(self.c.RED + '\nYou pressed Ctrl+C!' + self.c.WHITE)
+                            self.quit = True
+                            return
+                        except socket.timeout:
+                            if self.verbose == 1:
+                                print(
+                                    self.c.BWHITE + '[x] Port : ' + self.c.YELLOW + str(port) + self.c.RED + ' closed')
+                        except:
+                            pass
 
                 print(self.c.WHITE)
             except socket.timeout:
