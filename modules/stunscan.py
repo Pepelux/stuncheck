@@ -42,6 +42,9 @@ class StunScan:
         self.nonce = ''
         self.realm = ''
 
+    def remove_non_ascii(self, text):
+        return re.sub(r'[^\x00-\x7F]', ' ', text)
+
     def start(self):
         supported_protos = ['UDP', 'TCP', 'TLS']
 
@@ -337,8 +340,8 @@ class StunScan:
             attributes = attributes_parse(response.hex()[40:])
 
             if self.verbose == 2:
-                print(response.hex())
                 print(self.c.WHITE)
+                print(response.hex())
                 print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
                 print(headers)
                 print(self.c.WHITE + "   [-] Attributes:" + self.c.CYAN)
@@ -346,6 +349,9 @@ class StunScan:
                 print(self.c.WHITE)
 
             if self.verbose > 0:
+                print(self.c.WHITE)
+                print(self.c.BWHITE + '[+] IP address: ' + self.c.GREEN + ipaddr)
+                print(self.c.WHITE)
                 print(self.c.BWHITE + '[+] Headers:')
 
                 print(self.c.BWHITE + '  [-]  ' + self.c.BLUE + 'Message Type: ' +
@@ -426,7 +432,7 @@ class StunScan:
 
                 if self.ofile != '':
                     f.write('%s:%s/%s => %s\n' %
-                            (ip, port, proto, software))
+                            (ip, port, proto, self.remove_non_ascii(software)))
 
         print(self.c.WHITE + ' ' + '-' * tlen)
         print(self.c.WHITE)
