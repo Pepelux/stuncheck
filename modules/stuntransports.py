@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+__author__ = 'Jose Luis Verdeguer'
+__email__ = "pepeluxx@gmail.com"
+
 import random
 import socket
 import ssl
@@ -55,6 +58,10 @@ class StunTransports:
               self.c.GREEN + '%s' % self.rport)
         print(self.c.BWHITE + '[✓] Protocol: ' + self.c.GREEN + '%s' %
               self.proto.upper())
+        print(self.c.BWHITE + '[✓] Username: ' + self.c.GREEN + '%s' %
+              self.user)
+        print(self.c.BWHITE + '[✓] Password: ' + self.c.GREEN + '%s' %
+              self.pwd)
         print(self.c.WHITE)
 
         for i in range(256):

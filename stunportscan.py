@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+__author__ = 'Jose Luis Verdeguer'
+__email__ = "pepeluxx@gmail.com"
+
 from modules.stunportscan import StunPortscan
 from lib.params import get_stunportscan_args
 

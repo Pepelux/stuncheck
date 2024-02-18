@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+__author__ = 'Jose Luis Verdeguer'
+__email__ = "pepeluxx@gmail.com"
+
 from modules.stunsocks import StunSocks
 from lib.params import get_stunsocks_args
 

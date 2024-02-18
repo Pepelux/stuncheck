@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+__author__ = 'Jose Luis Verdeguer'
+__email__ = "pepeluxx@gmail.com"
+
 from modules.stunscan import StunScan
 from lib.params import get_stunscan_args
 
