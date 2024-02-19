@@ -52,6 +52,11 @@ class StunPortscan:
             print(self.c.BRED + 'Protocol %s is not supported' % self.proto)
             sys.exit()
 
+        # check remote port
+        if self.rport < 1 or self.rport > 65535:
+            print(self.c.BRED + 'Invalid remote port %s' % self.rport)
+            sys.exit()
+
         if self.ports.upper() == 'ALL':
             self.ports = '1-65536'
 

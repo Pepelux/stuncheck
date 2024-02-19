@@ -44,6 +44,11 @@ class StunTransports:
             print(self.c.BRED + 'Protocol %s is not supported' % self.proto)
             sys.exit()
 
+        # check remote port
+        if self.rport < 1 or self.rport > 65535:
+            print(self.c.BRED + 'Invalid remote port %s' % self.rport)
+            sys.exit()
+
         logo = Logo('stuntransports')
         logo.print()
 

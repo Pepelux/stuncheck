@@ -66,8 +66,11 @@ class StunScan:
             print(self.c.BRED + 'Protocol %s is not supported' % self.proto)
             sys.exit()
 
-        if self.rport == '3478' and (self.proto != 'UDP'):
+        if self.rport == '3478' and (self.proto == 'TLS'):
             self.rport = '3478,5349'
+
+        if self.rport == 'top':
+            self.rport = '3478,3481,80,443,4244,5222,5223,5228,5242,50318,59234,45395,8080,8443,8880,8881,8882,8883,1935,3074,37833,5439,19302'
 
         if self.rport.upper() == 'ALL':
             self.rport = '1-65536'
