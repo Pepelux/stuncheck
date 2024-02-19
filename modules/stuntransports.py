@@ -182,6 +182,11 @@ class StunTransports:
             headers = header_parse(response.hex()[0:40])
             attributes = attributes_parse(response.hex()[40:])
 
+            if attributes['ERROR-CODE'] == '401 Unauthorized':
+                print(self.c.RED + 'Wrong user/pass' + self.c.WHITE)
+                self.quit = True
+                return
+
             if self.verbose == 2:
                 print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
                 print(headers)

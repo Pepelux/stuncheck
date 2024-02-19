@@ -329,12 +329,8 @@ class StunSocks:
             headers = header_parse(message.hex()[0:40])
             attributes = attributes_parse(message.hex()[40:])
 
-            try:
-                print(self.c.BWHITE + "[✓] " + headers['MESSAGE_TYPE'] +
-                      ': ' + self.c.GREEN + ipaddr + self.c.WHITE)
-            except:
-                print(self.c.RED + 'ERROR')
-                exit()
+            if self.verbose > 0:
+                print(self.c.BWHITE + "[=>] " + self.c.GREEN + headers['MESSAGE_TYPE'] + self.c.WHITE)
 
             if self.verbose == 2:
                 print(self.c.BWHITE + "[+] Request 3")
@@ -372,8 +368,12 @@ class StunSocks:
                 if self.verbose > 0:
                     print(
                         self.c.BWHITE + "[<=] " + self.c.YELLOW + headers['MESSAGE_TYPE'] + self.c.WHITE)
-                print(self.c.BWHITE +
-                      "[✓] Destination accepted" + self.c.WHITE)
+
+                try:
+                    print(self.c.BWHITE + "[✓] Successful connection to destination: " + self.c.GREEN + ipaddr + self.c.WHITE)
+                except:
+                    print(self.c.RED + 'ERROR')
+                    exit()
 
             if self.verbose == 2:
                 print(self.c.BWHITE + "[+] Response 3")
@@ -493,6 +493,9 @@ class StunSocks:
                     print(data.decode())
                 except:
                     print(data)
+            else:
+                print(self.c.BWHITE +
+                      "[=>] " + self.c.GREEN + 'Request sent' + self.c.WHITE)
 
             if self.proto == 'TLS':
                 self.sock_ssl2.sendall(data)
@@ -516,6 +519,9 @@ class StunSocks:
                     print(response.decode())
                 except:
                     print(response)
+            else:
+                print(self.c.BWHITE +
+                      "[<=] " + self.c.YELLOW + 'Response received' + self.c.WHITE)
         except socket.timeout:
             print(self.c.RED + "Socket Timeout" + self.c.WHITE)
             exit()
