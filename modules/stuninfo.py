@@ -22,6 +22,7 @@ class StunInfo:
         self.rport = '3478'
         self.proto = 'UDP'
         self.verbose = '0'
+        self.nt = '0'
 
         self.c = Color()
 
@@ -55,8 +56,10 @@ class StunInfo:
         print(self.c.WHITE)
 
         self.send_request_info()
-        self.send_request_transport('UDP')
-        self.send_request_transport('TCP')
+
+        if self.nt != 1:
+            self.send_request_transport('UDP')
+            self.send_request_transport('TCP')
 
         print(self.c.WHITE)
 

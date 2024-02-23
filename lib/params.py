@@ -107,6 +107,7 @@ Get info about a STUN/TURN server.
     parser.add_argument('-proto', type=str, help=' Protocol to connect TURN server udp|tcp|tls (default: udp)', dest='proto', default='udp')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
+    parser.add_argument('-nt', '--no_transports', help='Do not check transports', dest='no_transports', action="count")
 
     # Array for all arguments passed to script
     args = parser.parse_args()
@@ -120,8 +121,9 @@ Get info about a STUN/TURN server.
         MORE_VERBOSE = args.more_verbose
         if MORE_VERBOSE == 1:
             VERBOSE = 2
+        NOTRANSPORTS = args.no_transports
 
-        return IPADDR, HOST, PORT, PROTO, VERBOSE
+        return IPADDR, HOST, PORT, PROTO, VERBOSE, NOTRANSPORTS
     except ValueError:
         sys.exit(1)
 

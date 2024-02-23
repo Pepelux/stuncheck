@@ -289,6 +289,7 @@ attributesTypes = {"0000": "",
                    "8002": "PASSWORD-ALGORITHMS",
                    "8003": "ALTERNATE-DOMAIN",
                    "8004": "ICMP",
+                   "8020": "XOR-MAPPED-ADDRESS",
                    "8022": "SOFTWARE",
                    "8023": "ALTERNATE-SERVER",
                    "8025": "TRANSACTION_TRANSMIT_COUNTER",
@@ -499,6 +500,9 @@ def attributes_parse(buf):
                 cont += 1
 
             attribute_length = int(buf[i + 4:i + 8], base=16)
+            padding = (4 - (attribute_length % 4)) % 4
+            attribute_length += padding
+
             if attribute_length % 2 != 0:
                 attribute_length += 1
             attribute_length *= 2
