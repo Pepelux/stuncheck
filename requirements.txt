@@ -4,3 +4,4 @@ IPy
 socks5server
 pyshark
 python-whois
+netifaces

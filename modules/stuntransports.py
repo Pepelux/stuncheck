@@ -21,6 +21,7 @@ class StunTransports:
         self.rport = '3478'
         self.proto = 'UDP'
         self.verbose = '0'
+        self.transport = ''
 
         self.quit = False
 
@@ -72,12 +73,12 @@ class StunTransports:
         for i in range(256):
             if self.quit == False:
                 transport = str(hex(i))[2:].zfill(2)
-                self.send_request_auth(self.user, self.pwd, transport)
+                if self.transport == transport or self.transport == '':
+                    self.send_request_auth(self.user, self.pwd, transport)
 
         print(self.c.WHITE)
 
     # Send request to auth user
-
     def send_request_auth(self, username, password, protocol):
         if protocol == '06':
             proto = 'TCP'
@@ -135,7 +136,7 @@ class StunTransports:
             else:
                 sock.sendto(message, addr)
                 response = sock.recv(1024)
-
+ 
             if self.verbose == 2:
                 print(self.c.BWHITE + "[+] Response")
                 print(self.c.YELLOW + str(response.hex()))
@@ -187,10 +188,13 @@ class StunTransports:
             headers = header_parse(response.hex()[0:40])
             attributes = attributes_parse(response.hex()[40:])
 
-            if attributes['ERROR-CODE'] == '401 Unauthorized':
-                print(self.c.RED + 'Wrong user/pass' + self.c.WHITE)
-                self.quit = True
-                return
+            try:
+                if attributes['ERROR-CODE'] == '401 Unauthorized':
+                    print(self.c.RED + 'Wrong user/pass' + self.c.WHITE)
+                    self.quit = True
+                    return
+            except:
+                pass
 
             if self.verbose == 2:
                 print(self.c.WHITE + "   [-] Header:" + self.c.CYAN)
@@ -201,17 +205,17 @@ class StunTransports:
             else:
                 if headers['MESSAGE_TYPE'] == 'Allocate Success Response':
                     print(self.c.BWHITE + '[✓] Proto %s (%s) ' %
-                          (protocol, get_protocol(protocol)) + self.c.GREEN + 'Connection successful')
+                            (protocol, get_protocol(protocol)) + self.c.GREEN + 'Connection successful' + self.c.WHITE)
                 else:
                     if self.verbose > 0:
                         print(self.c.BWHITE + '[x] Proto %s ' %
-                              protocol + self.c.RED + 'Connection error')
+                                protocol + self.c.RED + 'Connection error' + self.c.WHITE)
         except KeyboardInterrupt:
             print(self.c.RED + '\nYou pressed Ctrl+C!' + self.c.WHITE)
             self.quit = True
         except socket.timeout:
-            print(self.c.RED + "Socket Timeout" + self.c.WHITE)
-            exit()
+            if self.verbose > 0:
+                print(self.c.BWHITE + '[x] Proto %s ' % protocol + self.c.RED + 'Socket Timeout' + self.c.WHITE)
         except:
             pass
         finally:

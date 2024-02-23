@@ -9,13 +9,14 @@ from lib.params import get_stuntransports_args
 
 
 def main():
-    ip, host, rport, proto, verbose, user, pwd = get_stuntransports_args()
+    ip, host, rport, proto, transport, verbose, user, pwd = get_stuntransports_args()
 
     s = StunTransports()
     s.ip = ip
     s.host = host
     s.rport = rport
     s.proto = proto
+    s.transport = transport
     s.verbose = verbose
     s.user = user
     s.pwd = pwd

@@ -199,6 +199,7 @@ Bruteforce transports of a STUN server.
     parser.add_argument('-i', '--ip', type=str, help='Target IP address', dest="ipaddr", required=True)
     parser.add_argument('-r', '--remote_port', type=int, help='Remote port (default: 3478)', dest='remote_port', default=3478)
     parser.add_argument('-proto', type=str, help=' Protocol to connect TURN server udp|tcp|tls (default: udp)', dest='proto', default='udp')
+    parser.add_argument('-t', '--transport', type=str, help=' Transport number (default: ALL)', dest='transport', default='')
     parser.add_argument('-v', '--verbose', help='Increase verbosity', dest='verbose', action="count")
     parser.add_argument('-vv', '--more_verbose', help='Increase more verbosity', dest='more_verbose', action="count")
     parser.add_argument('-u', '--user', type=str, help='Username', dest="user")
@@ -212,6 +213,7 @@ Bruteforce transports of a STUN server.
         HOST = args.ipaddr
         PORT = args.remote_port
         PROTO = args.proto
+        TRANSPORT = args.transport
         VERBOSE = args.verbose
         MORE_VERBOSE = args.more_verbose
         if MORE_VERBOSE == 1:
@@ -219,7 +221,7 @@ Bruteforce transports of a STUN server.
         USER = args.user
         PWD = args.pwd
 
-        return IPADDR, HOST, PORT, PROTO, VERBOSE, USER, PWD
+        return IPADDR, HOST, PORT, PROTO, TRANSPORT, VERBOSE, USER, PWD
     except ValueError:
         sys.exit(1)
 
