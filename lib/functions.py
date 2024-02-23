@@ -501,13 +501,18 @@ def attributes_parse(buf):
 
             attribute_length = int(buf[i + 4:i + 8], base=16)
             padding = (4 - (attribute_length % 4)) % 4
+            attribute_length_orig = attribute_length
             attribute_length += padding
 
             if attribute_length % 2 != 0:
                 attribute_length += 1
             attribute_length *= 2
 
-            attribute_value = buf[i + 8:i + 8 + attribute_length]
+            if attribute_length_orig % 2 != 0:
+                attribute_length_orig += 1
+            attribute_length_orig *= 2
+
+            attribute_value = buf[i + 8:i + 8 + attribute_length_orig]
 
             if attribute_type[0:17] == 'unknown attribute':
                 ascii = ''
