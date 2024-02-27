@@ -486,9 +486,6 @@ def attributes_parse(buf):
     cont = 1
 
     while i < length:
-        # while buf[i + 0:i + 4] not in attributesTypes and i < length:
-        #     i += 2
-
         while buf[i + 0:i + 4] in attributesTypes and attributesTypes[buf[i + 0:i + 4]] == '' and i < length:
             i += 4
 
@@ -528,17 +525,12 @@ def attributes_parse(buf):
                 if ascii != '':
                     attribute_value = ascii
 
-            # print(buf[i + 0:i + 4])
-            # print(buf[i + 4:i + 8])
-            # print(attribute_length)
-            # print(attribute_value)
-            # print(attribute_type)
-
             try:
                 if attribute_type == 'CONNECTION-ID':
                     attribute[attribute_type] = bytes.fromhex(attribute_value)
                 else:
-                    if attribute_value == '00000401556e617574686f72697a6564':
+                    # if attribute_value[:26] == '00000401556e617574686f7269':
+                    if attribute_value[:8] == '00000401':
                         attribute[attribute_type] = '401 Unauthorized'
                     else:
                         attribute[attribute_type] = bytes.fromhex(

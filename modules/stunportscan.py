@@ -420,7 +420,11 @@ class StunPortscan:
 
                                         response_clear = response.decode()                        
                                         pos = response_clear.find('<')
-                                        print(self.c.RED + response_clear[0:pos] + self.c.WHITE)
+                                        
+                                        if pos > 0:
+                                            print(self.c.RED + response_clear[0:pos] + self.c.WHITE)
+                                        else:
+                                            print(self.c.RED + response_clear + self.c.WHITE)
                                     except:
                                         pass
                         except KeyboardInterrupt:
