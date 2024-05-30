@@ -439,3 +439,38 @@ Sniffer for the STUN protocol. When starting a conference it will show all IP ad
         print('[-] Error')
         sys.exit(1)
 
+
+def get_stunpcapdump_args():
+    parser = argparse.ArgumentParser(
+        formatter_class=lambda prog: argparse.RawDescriptionHelpFormatter(
+            prog, max_help_position=50),
+        description= RED + u'''☎️  STUNCHECK''' + WHITE + ''' BY ''' + GREEN + '''🅿 🅴 🅿 🅴 🅻 🆄 🆇''' + YELLOW + '''
+        
+███████████████████████████████████████████████████████████████████████████████
+█─▄▄▄▄█─▄─▄─█▄─██─▄█▄─▀█▄─▄█▄─▄▄─█─▄▄▄─██▀▄─██▄─▄▄─█▄─▄▄▀█▄─██─▄█▄─▀█▀─▄█▄─▄▄─█
+█▄▄▄▄─███─████─██─███─█▄▀─███─▄▄▄█─███▀██─▀─███─▄▄▄██─██─██─██─███─█▄█─███─▄▄▄█
+▀▄▄▄▄▄▀▀▄▄▄▀▀▀▄▄▄▄▀▀▄▄▄▀▀▄▄▀▄▄▄▀▀▀▄▄▄▄▄▀▄▄▀▄▄▀▄▄▄▀▀▀▄▄▄▄▀▀▀▄▄▄▄▀▀▄▄▄▀▄▄▄▀▄▄▄▀▀▀
+
+''' + GREEN + '''💾 https://github.com/Pepelux/stuncheck''' + WHITE + '''
+''' + YELLOW + '''🐦 https://twitter.com/pepeluxx''' + WHITE + '''
+
+''' + BBLUE + ''' -= STUN scan =-''' + WHITE,
+        epilog=BWHITE + '''
+STUN/TURN Dump IPs from Pcap files.
+ 
+''')
+
+    # Add arguments
+    parser.add_argument('-f', '--file', type=str, help='PCAP file', dest='file', required=True)
+
+    # Array for all arguments passed to script
+    args = parser.parse_args()
+
+    try:
+        FILE = args.file
+
+        return FILE
+    except ValueError:
+        sys.exit(1)
+
+
