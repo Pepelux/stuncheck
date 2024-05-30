@@ -48,11 +48,11 @@ class StunPCAPDump:
                     self.ips.append((data, msg))
                     self.data.append((id, data, msg))
 
-                self.search(r'MAPPED-ADDRESS:\s([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}[:|0-9]*)\s', line, 'MAPPED-ADDRESS', data)
-                self.search(r'RESPONSE-ORIGIN:\s([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}[:|0-9]*)\s', line, 'RESPONSE-ORIGIN', data)
-                self.search(r'XOR-MAPPED-ADDRESS:\s([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}[:|0-9]*)\s', line, 'XOR-MAPPED-ADDRESS', data)
-                self.search(r'XOR-PEER-ADDRESS:\s([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}[:|0-9]*)\s', line, 'XOR-PEER-ADDRESS', data)
-                self.search(r'XOR-RELAYED-ADDRESS:\s([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}[:|0-9]*)\s', line, 'XOR-RELAYED-ADDRESS', data)
+                self.search(r'MAPPED-ADDRESS:\s([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}[:|0-9]*)\s', line, 'MAPPED-ADDRESS', data, id)
+                self.search(r'RESPONSE-ORIGIN:\s([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}[:|0-9]*)\s', line, 'RESPONSE-ORIGIN', data, id)
+                self.search(r'XOR-MAPPED-ADDRESS:\s([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}[:|0-9]*)\s', line, 'XOR-MAPPED-ADDRESS', data, id)
+                self.search(r'XOR-PEER-ADDRESS:\s([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}[:|0-9]*)\s', line, 'XOR-PEER-ADDRESS', data, id)
+                self.search(r'XOR-RELAYED-ADDRESS:\s([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}[:|0-9]*)\s', line, 'XOR-RELAYED-ADDRESS', data, id)
 
 
         f.close()
@@ -61,13 +61,14 @@ class StunPCAPDump:
         self.print()
             
 
-    def search(self, regex, line, attribute, data):
+    def search(self, regex, line, attribute, data, id):
         m = re.search(regex, line)
         if m:
             ip = m.group(1)
             msg = f'{attribute}: {ip}'
             if (data, msg) not in self.ips:
                 self.ips.append((data, msg))
+                self.data.append((id, data, msg))
 
 
     def print(self):
