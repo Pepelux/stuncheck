@@ -20,13 +20,18 @@ class StunPCAPDump:
         self.c = Color()
 
     def start(self):
-        tmpfile = 'stunpcapdump.tmp'
-
         logo = Logo('stunpcapdump')
         logo.print()
 
         print(self.c.BWHITE+'[✓] Input file: %s ...' % self.file)
         print(self.c.WHITE)
+
+        self.stun()
+        self.rtp()
+        self.print()
+
+    def stun(self):
+        tmpfile = 'stunpcapdump.tmp'
 
         print(self.c.WHITE + 'Extracting STUN packages from PCAP file ...')
         print(self.c.WHITE)
@@ -57,8 +62,33 @@ class StunPCAPDump:
 
         f.close()
         os.remove(tmpfile)
+            
+    def rtp(self):
+        tmpfile = 'stunpcapdump.tmp'
 
-        self.print()
+        print(self.c.WHITE + 'Extracting RTP packages from PCAP file ...')
+        print(self.c.WHITE)
+        os.system("tshark -r %s -Y rtp > %s" % (self.file, tmpfile))
+
+        f = open(tmpfile, 'r')
+        for line in f:
+            line = line.replace('\n', '')
+
+            if line.find('RTP'):
+                regex = r'^\s*([0-9]*)\s*[0-9|.]*\s([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})\s.*\s([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3})\s.*'
+                m = re.search(regex, line)
+                if m:
+                    id = m.group(1)
+                    ip1 = m.group(2)
+                    ip2 = m.group(3)
+                    data = f'{ip1} => {ip2}'
+                    msg = 'RTP stream'
+                    if (data, msg) not in self.ips:
+                        self.ips.append((data, msg))
+                        self.data.append(('', data, msg))
+
+        f.close()
+        os.remove(tmpfile)
             
 
     def search(self, regex, line, attribute, data, id):
@@ -108,7 +138,13 @@ class StunPCAPDump:
         print(self.c.WHITE + ' ' + '-' * tlen)
         print(self.c.WHITE)
         
-        print("You can filter the conversation in wireshark using filter: 'frame.number==FRAME_ID'")
-        print("or using tshark with the filter: -Y '(frame.number==FRAME_ID)'")
+        print("Filtering data with Wireshark:")
+        print("- Filter for STUN frames: 'stun")
+        print("- Filter for a STUN frame: 'frame.number==FRAME_ID'")
+        print("- Filter for RTP frames: 'rtp")
+        print("Filtering data with Tshark:")
+        print("- Filter for STUN frames: '-Y stun")
+        print("- Filter for a STUN frame: -Y '(frame.number==FRAME_ID)'")
+        print("- Filter for RTP frames: '-Y rtp")
         print()
 
