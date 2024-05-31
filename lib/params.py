@@ -462,14 +462,16 @@ STUN/TURN Dump IPs from Pcap files.
 
     # Add arguments
     parser.add_argument('-f', '--file', type=str, help='PCAP file', dest='file', required=True)
+    parser.add_argument('-i', '--ips', help='Show all involved IPs in conversations', dest='ips', action="count")
 
     # Array for all arguments passed to script
     args = parser.parse_args()
 
     try:
         FILE = args.file
+        IPS =args.ips
 
-        return FILE
+        return FILE, IPS
     except ValueError:
         sys.exit(1)
 

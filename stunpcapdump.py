@@ -9,10 +9,11 @@ from lib.params import get_stunpcapdump_args
 
 
 def main():
-    file = get_stunpcapdump_args()
+    file, findips = get_stunpcapdump_args()
 
     s = StunPCAPDump()
     s.file = file
+    s.findips = findips
 
     s.start()
 
