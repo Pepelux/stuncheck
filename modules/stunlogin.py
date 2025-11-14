@@ -151,12 +151,12 @@ class StunLogin:
                 print(attributes)
                 print(self.c.WHITE)
 
-            realm = attributes['REALM']
+            realm = attributes['REALM'].rstrip('\x00')
             nonce = attributes['NONCE']
 
             # Second request
             message = build_request(
-                3, transaction_id, protocol, False, '', username, realm, nonce, password)
+                3, transaction_id, protocol, False, '', username, realm.rstrip('\x00'), nonce, password)
 
             headers = header_parse(message.hex()[0:40])
             attributes = attributes_parse(message.hex()[40:])
